@@ -17,40 +17,52 @@ Open Terminal:
 Run the following command to install the nodemon globally in the Machine : 
     
 `npm install -g nodemon`
-
-    1. Goto the backend project directory
-        i) OPC-UA-CLIENT
+     
+    ```
+    ## Goto the backend project directory
+        
+        ### OPC-UA-CLIENT
             Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
             you can run the following command in terminal:
             `npm install`
-        ii) CBM SERVICE 
+        ### CBM SERVICE 
             Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
             you can run the following command in terminal: ### `npm install`
-    2. Goto the Front End Folder
-        i) CBM FRONTEND
-        Path::D:\{Project Directory}\CBM_FRONTEND
-        you can run the following command in terminal: ### `npm install`
+    ```
+    ## Goto the Front End Folder
+        ### CBM FRONTEND
+            Path::D:\{Project Directory}\CBM_FRONTEND
+            you can run the following command in terminal: 
+           `npm install`
 
 
 ### Steps to start the Backend and Fronted Server:
 
-Steps to start the Backend Server
+## Steps to start the Backend Server
 
-    1. Goto the backend project directory
+    Goto the backend project directory
         Here need to start the two services
-         i) OPC-UA-CLIENT
+         
+         ```
+         ### OPC-UA-CLIENT
             Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
-            you can run the following command in terminal: ### `npm start`
-         ii) CBM SERVICE 
+            you can run the following command in terminal: 
+            `npm start`
+         ### CBM SERVICE 
             Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
-            you can run the following command in terminal: ### `npm start`
+            you can run the following command in terminal:
+            `npm start`
+          ```
 
 Steps to start the Frontend Server
 
-    2. Goto the Front End Folder
-        i) CBM FRONTEND
-        Path::D:\{Project Directory}\CBM_FRONTEND
-        you can run the following command in terminal: ### `npm start`
+    Goto the Front End Folder
+         ```
+        ### CBM FRONTEND
+           Path::D:\{Project Directory}\CBM_FRONTEND
+           you can run the following command in terminal: 
+           `npm start`
+         ```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
