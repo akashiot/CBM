@@ -1,0 +1,81 @@
+{
+    "station-1":{
+      "Sensor-1":[{
+            "Timestamp": "2022-11-02 5:14:23",
+            "Type": "Instant",
+            "lsl":22,
+            "actual":68,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      },
+      {
+            "Timestamp": "2022-11-02 5:14:33",
+            "Type": "10 Sec Fault",
+            "lsl":22,
+            "actual":68,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      }
+      ],
+      "Sensor-2":[{
+            "Timestamp": "2022-11-02 5:14:23",
+            "Type": "Instant",
+            "lsl":22,
+            "actual":78,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      },
+      {
+            "Timestamp": "2022-11-02 5:14:33",
+            "Type": "10 Min Fault",
+            "lsl":22,
+            "actual":68,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      },
+      {
+            "Timestamp": "2022-11-02 5:14:33",
+            "Type": "10 Min Fault",
+            "lsl":22,
+            "actual":34,
+            "hsl":67,
+            "Fault Type": "LSL Fault"
+      }
+      ]
+    },
+      "station-2":{
+      "Sensor-1":[{
+            "Timestamp": "2022-11-02 5:14:23",
+            "Type": "Instant",
+            "lsl":22,
+            "actual":168,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      },
+      {
+            "Timestamp": "2022-11-02 5:14:33",
+            "Type": "10 Min Fault",
+            "lsl":22,
+            "actual":68,
+            "hsl":67,           
+            "Fault Type": "HSL Fault"
+      }
+      ],
+      "Sensor-2":[{
+            "Timestamp": "2022-11-02 5:14:23",
+            "Type": "10 Sec Fault",
+            "lsl":22,
+            "actual":68,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      },
+      {
+            "Timestamp": "2022-11-02 5:14:33",
+            "Type": "10 Sec Fault",
+            "lsl":22,
+            "actual":68,
+            "hsl":67,
+            "Fault Type": "HSL Fault"
+      }]
+    }
+  }

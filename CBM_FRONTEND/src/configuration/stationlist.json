@@ -1,0 +1,39 @@
+{
+    "status": "Success",
+    "msg": "Details Found",
+    "data": [
+        {
+            "HashId": null,
+            "Name": "Assembly",
+            "Code": "M1",
+            "Flag": null,
+            "CompanyCode": null,
+            "PlantCode": null,
+            "LineCode": null,
+            "MachineCode": null,
+            "Parameter": null
+        },
+        {
+            "HashId": null,
+            "Name": "Tightening",
+            "Code": "M2",
+            "Flag": null,
+            "CompanyCode": null,
+            "PlantCode": null,
+            "LineCode": null,
+            "MachineCode": null,
+            "Parameter": null
+        },
+        {
+            "HashId": null,
+            "Name": "Laser Marking",
+            "Code": "M3",
+            "Flag": null,
+            "CompanyCode": null,
+            "PlantCode": null,
+            "LineCode": null,
+            "MachineCode": null,
+            "Parameter": null
+        }
+    ]
+}

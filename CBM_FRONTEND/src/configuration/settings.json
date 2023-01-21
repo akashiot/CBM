@@ -1,0 +1,107 @@
+{
+    "station-1":[
+      {
+            "name":"Sensor-1",
+            "hsl":67,
+            "lsl":22
+      },
+      {
+            "name":"Sensor-2",
+            "hsl":40,
+            "lsl":20
+      }],
+      "station-2":[
+      {
+            "name":"Sensor-1",
+            "hsl":67,
+            "lsl":22
+            
+      },
+      {
+            "name":"Sensor-2",
+            "hsl":67,
+            "lsl":22
+           
+      },
+          {
+            "name":"Sensor-3",
+            "hsl":67,
+            "lsl":22
+      }
+      ],
+      "station-3":[
+        {
+              "name":"Sensor-1",
+              "hsl":67,
+              "lsl":22
+              
+        },
+        {
+              "name":"Sensor-2",
+              "hsl":67,
+              "lsl":22
+             
+        },
+            {
+              "name":"Sensor-3",
+              "hsl":67,
+              "lsl":22
+        }
+        ],
+        "station-4":[
+            {
+                  "name":"Sensor-1",
+                  "hsl":67,
+                  "lsl":22
+                  
+            },
+            {
+                  "name":"Sensor-2",
+                  "hsl":67,
+                  "lsl":22
+                 
+            }
+            ],
+            "station-5":[
+                {
+                      "name":"Sensor-1",
+                      "hsl":67,
+                      "lsl":22
+                      
+                },
+                {
+                      "name":"Sensor-2",
+                      "hsl":67,
+                      "lsl":22
+                     
+                }
+                ],
+            "station-6":[
+                    {
+                          "name":"Sensor-1",
+                          "hsl":67,
+                          "lsl":22
+                          
+                    },
+                    {
+                          "name":"Sensor-2",
+                          "hsl":67,
+                          "lsl":22
+                         
+                    }
+                ],
+                "station-7":[
+                    {
+                          "name":"Sensor-1",
+                          "hsl":67,
+                          "lsl":22
+                          
+                    },
+                    {
+                          "name":"Sensor-2",
+                          "hsl":67,
+                          "lsl":22
+                         
+                    }
+                ]
+  }

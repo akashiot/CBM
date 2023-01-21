@@ -1,0 +1,1 @@
+{"plc_count":[0],"plc_config":[{"name":"plc-1","IP":"192.168.18.99","rack":"0","slot":"1","port":"102","refresh_rate":"1000","Tags":{"station2_PT":"DB7,DINT20","station1_OT":"DB7,REAL4","station1_OT1":"DB7,REAL8","station1_PT1":"DB7,REAL16","station2_OT2":"DB7,REAL16"}}]}

@@ -1,0 +1,74 @@
+{
+  "station-1":{
+    "Sensor-1":[{
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:23",
+          "Type": "Instant",
+          "Fault Type": "HSL Fault"
+    },
+    {
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:33",
+          "Type": "10 Sec Fault",
+          "Fault Type": "HSL Fault"
+    }
+    ],
+    "Sensor-2":[{
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:23",
+          "Type": "Instant",
+          "Fault Type": "HSL Fault"
+    },
+    {
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:33",
+          "Type": "10 Sec Fault",
+          "Fault Type": "HSL Fault"
+    }
+    ]
+  },
+    "station-2":{
+    "Sensor-1":[{
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:23",
+          "Type": "Instant",
+          "Fault Type": "HSL Fault"
+    },
+    {
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:33",
+          "Type": "10 Sec Fault",
+          "Fault Type": "HSL Fault"
+    }
+    ],
+    "Sensor-2":[{
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:23",
+          "Type": "Instant",
+          "Fault Type": "HSL Fault"
+    },
+    {
+          "hsl":67,
+          "actual":68,
+          "lsl":22,
+          "Timestamp": "2022-11-02 5:14:33",
+          "Type": "10 Sec Fault",
+          "Fault Type": "HSL Fault"
+    }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "plc_count": [
+        0
+    ],
+    "plc_config": [
+        {
+            "name": "plc-1",
+            "IP": "opc.tcp://192.168.1.235:4840",
+            "refresh_rate": "1500",
+            "Tags": {
+            }
+        }
+    ]
+}

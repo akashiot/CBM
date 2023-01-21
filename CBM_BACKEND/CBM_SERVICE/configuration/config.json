@@ -1,0 +1,10 @@
+{
+    "database_config":"development",
+    "plc_refreshrate":"3000",
+    "qurey_intervaltime":1,
+    "timeformat":"minute",
+    "alertqurey_intervaltime":1,
+    "alert_timeformat":"minute",
+    "plcUrl":"http://192.168.132.216:3008",
+    "serviceUrl":"http://192.168.132.216:7004"
+}
