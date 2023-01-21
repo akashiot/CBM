@@ -12,7 +12,7 @@ In the project directory, you can run:
 
 Note: Project directory is D:/cbm/CBM Projects/
 
-### Steps to Install all the packages
+Steps to Install all the packages
     Open Terminal:
     Run the following command to install the nodemon globally in the Machine : 
     ### `npm install -g nodemon`
