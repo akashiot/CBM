@@ -50,7 +50,6 @@ Here need to start the two services
 - Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
 - you can run the following command in terminal:
 `npm start`
- 
 
 Steps to start the Frontend Server
 
