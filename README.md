@@ -15,12 +15,14 @@ Note: Project directory is D:/cbm/CBM Projects/
 Steps to Install all the packages
     Open Terminal:
     Run the following command to install the nodemon globally in the Machine : 
+    
     ### `npm install -g nodemon`
 
     1. Goto the backend project directory
         i) OPC-UA-CLIENT
             Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
-            you can run the following command in terminal: ### `npm install`
+            you can run the following command in terminal:
+            ### `npm install`
         ii) CBM SERVICE 
             Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
             you can run the following command in terminal: ### `npm install`
