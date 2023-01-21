@@ -1,52 +1,66 @@
+# CBM
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
+You can run the following command In the project directory:
 
-### `npm start`
+ `npm start`
 
-Note: Project directory is D:/cbm/CBM Projects/
+### `Note: Project directory is D:/cbm/CBM Projects/`
 
 ### Steps to Install all the packages
-    Open Terminal:
-    Run the following command to install the nodemon globally in the Machine : npm install -g nodemon
+Open Terminal:
+Run the following command to install the nodemon globally in the Machine : 
+    
+`npm install -g nodemon`    
+## Goto the backend project directory
+    
+### OPC-UA-CLIENT
+- Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
+- you can run the following command in terminal:
+`npm install`
+### CBM SERVICE 
+- Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
+- you can run the following command in terminal: 
+`npm install`
 
-    1. Goto the backend project directory
-        i) OPC-UA-CLIENT
-            Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
-            you can run the following command in terminal: ### `npm install`
-        ii) CBM SERVICE 
-            Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
-            you can run the following command in terminal: ### `npm install`
-    2. Goto the Front End Folder
-        i) CBM FRONTEND
-        Path::D:\{Project Directory}\CBM_FRONTEND
-        you can run the following command in terminal: ### `npm install`
+## Goto the Front End Folder
+### CBM FRONTEND
+ - Path::D:\{Project Directory}\CBM_FRONTEND
+ - you can run the following command in terminal: 
+`npm install`
 
 
 ### Steps to start the Backend and Fronted Server:
 
-Steps to start the Backend Server
+## Steps to start the Backend Server
 
-    1. Goto the backend project directory
-        Here need to start the two services
-         i) OPC-UA-CLIENT
-            Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
-            you can run the following command in terminal: ### `npm start`
-         ii) CBM SERVICE 
-            Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
-            you can run the following command in terminal: ### `npm start`
+Goto the backend project directory
+    
+Here need to start the two services
+ ### OPC-UA-CLIENT
+- Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
+- you can run the following command in terminal: 
+`npm start`
+ ### CBM SERVICE 
+- Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
+- you can run the following command in terminal:
+`npm start`
+ 
 
 Steps to start the Frontend Server
 
-    2. Goto the Front End Folder
-        i) CBM FRONTEND
-        Path::D:\{Project Directory}\CBM_FRONTEND
-        you can run the following command in terminal: ### `npm start`
+Goto the Front End Folder
 
+### CBM FRONTEND
+   - Path::D:\{Project Directory}\CBM_FRONTEND
+   - you can run the following command in terminal: 
+   `npm start`
+``
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
