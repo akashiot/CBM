@@ -5,6 +5,6 @@
     "timeformat":"minute",
     "alertqurey_intervaltime":1,
     "alert_timeformat":"minute",
-    "plcUrl":"http://172.22.59.68:3008",
-    "serviceUrl":"http://172.22.59.68:7004"
+    "plcUrl":"http://172.22.58.162:3008",
+    "serviceUrl":"http://172.22.58.162:7004"
 }
