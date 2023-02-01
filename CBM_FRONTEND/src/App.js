@@ -10,6 +10,8 @@ import {UserContext} from './components/context';
 import { MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import url from './configuration/url.json'
+import Basic from './components/dragndrop/dragndrop';
+import Fileupload from './components/dragndrop/dragndrop';
 
 
 
@@ -174,6 +176,10 @@ function App() {
                     <Route
                         path="/settings"
                         element={ <Settings /> }
+                    /> 
+                    <Route
+                        path="/upload"
+                        element={ <Fileupload /> }
                     /> 
                 </Routes>
             </UserContext.Provider>

@@ -421,7 +421,7 @@ export default function Test(){
                         <MDBRow>
                             <MDBCol lg="6" className="mt-4 px-4"> 
                                     <MDBRadio name='inlineRadio' id='inlineRadio1' value='option1' label='StationWise' onClick={()=>{getGroupSensor();setRadioSelected(true);}} inline defaultChecked={radioSelected ? true : false} />
-                                    <MDBRadio name='inlineRadio' id='inlineRadio2' value='option2' label='Groupwise' onClick={()=>{GroupwiseGroupSensor();setFilter("");setRadioSelected(false);}} inline defaultChecked={radioSelected ? false : true} />
+                                    {/* <MDBRadio name='inlineRadio' id='inlineRadio2' value='option2' label='Groupwise' onClick={()=>{GroupwiseGroupSensor();setFilter("");setRadioSelected(false);}} inline defaultChecked={radioSelected ? false : true} /> */}
                             </MDBCol>
                             <MDBCol lg="6" className="d-flex justify-content-end  pb-2 mt-4 px-5">
                                 {/* <button className="btn btn-primary" onClick={getStation}>Test</button> */}

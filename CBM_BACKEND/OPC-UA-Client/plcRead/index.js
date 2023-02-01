@@ -87,6 +87,7 @@ exports.plcReadData = async (plcinfo) => {
                 datafromplc[plcinfo.name]["connection"] = true;
                 nodeidread[element] = dataValue.value.value[1];
               }
+              //Changes for 
               Object.keys(nodeidread).forEach((key) => {
                 const station = key.split("_")[0] + "_" + key.split("_")[1];
                 if (!datafromplc[plcinfo.name][station])

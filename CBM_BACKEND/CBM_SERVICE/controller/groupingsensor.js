@@ -185,10 +185,10 @@ exports.getGroupingtypevalue=async function(req,res){
     try {
         var sta={}
             const select =  await sequelize.query(`SELECT * FROM grouping_configuration`);
+            console.log(select);
                 for await (const ele of select[0]) {
                     if(sta[ele?.sensor_type]){
                         if(sta[ele?.sensor_type][ele?.station_name]){
-                           console.log("sta[ele?.station_name][ele?.sensor_name]",sta[ele?.station_name][ele?.sensor_name]);
                             sta[ele?.sensor_type][ele?.station_name]['id'].ele?.grp_id
                             sta[ele?.sensor_type][ele?.station_name]['station_name'].ele?.station_name
                             sta[ele?.sensor_type][ele?.station_name]['sensor_name'].ele?.sensor_name

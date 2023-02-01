@@ -9,7 +9,6 @@ exports.actualvalue =async function(stn,data){
     db.query(`SELECT station_name,sensor_name,type,sensor_type,lsl,hsl,unit FROM grouping_configuration `, function (err, rows) {
         if(err)console.log(err)
             rows.forEach(ele=>{  
-                // console.log("Object.keys(data)",Object.keys(data));
             var stan= Object.keys(data).map(k => ({ [k]: data[k] }));
             stan.forEach(key=>{
             var sensorname= Object.keys(key)

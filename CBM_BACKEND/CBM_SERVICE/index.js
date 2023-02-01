@@ -20,6 +20,7 @@ var actual = require("./controller/actualValues");
 var reports = require("./controller/report");
 const { join } = require("path");
 const ip = require("../OPC-UA-Client/plcRead/connectionurl");
+const fileupload = require("../CBM_SERVICE/controller/fileUpload");
 
 // http://192.168.132.216:3008
 const plcurl = `http://${ip.connectionURLS}:3008`;
@@ -106,6 +107,11 @@ app.post("/alert/sensorlist", function (req, res) {
   alert.sensorList(req, res);
 });
 
+app.post("/upload",(req, res)=>{
+  fileupload.insertData(req, res);
+  console.log('req.body',req.body);
+});
+console.log("datatat2");
 var stationNo;
 async function valuesReady() {
   try {
