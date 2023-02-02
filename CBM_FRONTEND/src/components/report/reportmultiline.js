@@ -1,14 +1,12 @@
 import ReactECharts from 'echarts-for-react';
 import { useEffect, useState } from 'react';
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/chartseries.json'
 
 export default function Reportmultilinechart(props) {
-
+  //Multiline chart variables 
   const [multiSeries,setMultiSeries]=useState([])
   const [timeSeries,setTimeSeries]=useState([])
-  // const [multilineChartOption, setMultilineChartOption] = useState({})
-
-   
+     // Assigning multiline series data to chart when groupwise enabled
+      // Variable options contains default configuration of chart
   useEffect(()=>{
     let multiLine=[];
     let series =[];
@@ -128,19 +126,15 @@ export default function Reportmultilinechart(props) {
                         pieces:[
                           {
                             min:-5,
-                            // max:10,
                             max:parseFloat(multiSeries[0]?.data.slice(-1)[0]) || 0,
                             color:"#FFEA00"
                           },
                           {
-                            // min: 10,
-                            // max: 30,
                             min:parseFloat(multiSeries[0]?.data.slice(-1)[0]) || 0,
                             max:parseFloat(multiSeries[1]?.data.slice(-1)[0]) || 0,
                             color:"#00E676"
                           },
                           {
-                            // min: 30,
                             min: parseFloat(multiSeries[1]?.data.slice(-1)[0]) || 0,
                             color:"#FF1744"
                           }

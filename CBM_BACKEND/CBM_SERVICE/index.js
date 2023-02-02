@@ -1,36 +1,30 @@
-// import { Sequelize, Model, DataTypes } from 'sequelize';
-const mysql = require("mysql2");
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const db = require("./model/dbconfig");
 const moment = require("moment");
 const fs = require("fs");
-const momentt = require("moment-timezone");
 var bodyparser = require("body-parser");
 const sequelize = require("./model/database");
-const { SMALLINT } = require("sequelize");
-
-var settings = require("./configuration/config.json");
+var settings = require('./configuration/config.json');
 var limits = require("./controller/sensorconfiguration");
-var stns = require("./controller/stationconfiguration");
 var grpconfig = require("./controller/groupingsensor");
 var alert = require("./controller/alertlog");
 var actual = require("./controller/actualValues");
 var reports = require("./controller/report");
-const { join } = require("path");
 const ip = require("../OPC-UA-Client/plcRead/connectionurl");
-const fileupload = require("../CBM_SERVICE/controller/fileUpload");
+const fileupload = require("../CBM_Service/controller/fileUpload");
 
-// http://192.168.132.216:3008
-const plcurl = `http://${ip.connectionURLS}:3008`;
-console.log("endpointUrl", plcurl);
+const opcua = `http://${ip.connectionURLS}:3008`;
+const plcurl = `http://${ip.connectionURLS}:3001`;
+console.log("plcurl endpointUrl", plcurl);
+console.log("opcua endpointUrl", opcua);
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
 
 const port = 7004;
 app.listen(`${port}`, () => {
+  // Backend services execution started on the configured port.
   console.log(`listening port on ${port}`);
 });
 
@@ -47,19 +41,6 @@ app.post("/configuration/deleteSensor", function (req, res) {
 });
 app.get("/configuration/getSensor", function (req, res) {
   limits.getSensorvalue(req, res);
-});
-//STATIONS API's
-app.post("/configuration/addStation", function (req, res) {
-  stns.addStationvalue(req, res);
-});
-app.post("/configuration/updateStation", function (req, res) {
-  stns.updateStationvalue(req, res);
-});
-app.post("/configuration/deleteStation", function (req, res) {
-  stns.deleteStationvalue(req, res);
-});
-app.get("/configuration/getStation", function (req, res) {
-  stns.getStationvalue(req, res);
 });
 //GROUPING API's
 app.post("/configuration/addGroupingsensor", function (req, res) {
@@ -78,13 +59,10 @@ app.get("/configuration/getGroupingstationvalue", function (req, res) {
   grpconfig.getGroupingstationvalue(req, res);
 });
 app.get("/configuration/getTypewisedata", function (req, res) {
+  console.log("api")
   grpconfig.getGroupingtypevalue(req, res);
 });
-/*** CONFIGURATION API's END****/
-
-// app.post('/actualvalue', function (req,res) {
-//     actual.actualvalue(req,res)
-// })
+// Alarm
 app.post("/alert/alertDetails", function (req, res) {
   alert.alertAPI(req, res);
 });
@@ -108,16 +86,21 @@ app.post("/alert/sensorlist", function (req, res) {
 });
 
 app.post("/upload",(req, res)=>{
-  fileupload.insertData(req, res);
-  console.log('req.body',req.body);
+  fileupload.insertData(req, res)
+  console.log('req.body',res);
 });
-console.log("datatat2");
+/*** CONFIGURATION API's END****/
+
 var stationNo;
 async function valuesReady() {
+  //1. Reading PLC data from the Configured PLC tags ,
+  //2. Read values pass to actualvalue function to log the live data,
+  //3. Read values pass to alertLog function to log the alarms,
   try {
-    // const res = await axios.get(settings.plcUrl+'/getPlcData')
-    // const res = await axios.get(settings.plcUrl+'/getopcuadata')
-    const res = await axios.get(plcurl + "/getopcuadata");
+    // const res = await axios.get(settings.plcUrl + "/getPlcData");
+    // "http://192.168.200.216:3001",
+    // const res = await axios.get(`http://${ip.connectionURLS}:3001` + "/getPlcData");
+    const res = await axios.get(opcua + "/getopcuadata");
     const plcs = Object.keys(res?.data);
     plcs.forEach((plc) => {
       var connection = res.data[plc].connection;
@@ -145,6 +128,7 @@ setInterval(function () {
 }, settings.plc_refreshrate);
 
 app.get("/onehourdata", async (req, res) => {
+  //Format live data based on stationwise configuration
   try {
     var sta = {};
     const results = await sequelize.query(
@@ -155,7 +139,6 @@ app.get("/onehourdata", async (req, res) => {
       const select = await sequelize.query(
         `select * from actual_data where station='${data.station}' AND type='type' AND time_stamp > now() - interval 5 minute `
       );
-      // console.log(select[0].length,data.station)
       for await (const ele of select[0]) {
         if (sta[ele?.station]) {
           if (sta[ele?.station][ele?.sensor]) {
@@ -199,65 +182,13 @@ app.get("/onehourdata", async (req, res) => {
         }
       }
     }
-
-    // var stat={}
-    // const resultss =  await sequelize.query(`SELECT DISTINCT station FROM actual_data where time_stamp > now() - interval 150 minute `);
-    // const result = await resultss[0]
-    // for await (const data of result) {
-    //     const select =  await sequelize.query(`select * from actual_data where station='${data.station}' AND type='type' AND time_stamp > now() - interval 150 minute `);
-    //     for await (const ele of select[0]) {
-    //         if(stat[ele?.groupsensor_name]){
-    //             if(stat[ele?.groupsensor_name][ele?.sensor]){
-    //                 // sta[ele?.groupsensor_name][ele?.sensor]['station'].push(ele?.station)
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['lsl'].push(ele?.lsl)
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['hsl'].push(ele?.hsl)
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['xaxis'].push(moment(ele?.time_stamp).format('LTS'))
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['yaxis'].push(ele?.actual_data)
-    //                 stat[ele?.station][ele?.sensor]['unit'].ele?.unit
-    //             } else {
-    //                 stat[ele?.groupsensor_name][ele?.sensor] = {
-    //                     "name": ele?.station,
-    //                     "sensorname": ele?.sensor,
-    //                     "lsl":[],
-    //                     "hsl":[],
-    //                     "xaxis":[],
-    //                     "yaxis":[],
-    //                     "unit":ele?.unit
-    //                 }
-    //             }
-    //         } else {
-    //             stat[ele?.groupsensor_name] = {}
-    //             if(stat[ele?.groupsensor_name][ele?.sensor]){
-    //                 // sta[ele?.groupsensor_name][ele?.sensor]['station'].push(ele?.station)
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['lsl'].push(ele?.lsl)
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['hsl'].push(ele?.hsl)
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['xaxis'].push(moment(ele?.time_stamp).format('LTS'))
-    //                 stat[ele?.groupsensor_name][ele?.sensor]['yaxis'].push(ele?.actual_data)
-    //             } else {
-    //                 stat[ele?.groupsensor_name][ele?.sensor] = {
-    //                     "name": ele?.station,
-    //                     "sensorname": ele?.sensor,
-    //                     "lsl":[],
-    //                     "hsl":[],
-    //                     "xaxis":[],
-    //                     "yaxis":[],
-    //                     "unit":ele?.unit
-
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    // console.clear()
-    // console.log("sta",sta);
     await res.json({ status: true, Result: sta });
-    //  await res.json({status:true,Result:{StationOnehourData:sta,GroupingOnehourData:stat}})
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
-
 app.get("/groupingonehourdata", async (req, res) => {
+  //Format live data based on groupwise configuration
   try {
     var stat = {};
     const results = await sequelize.query(
@@ -269,10 +200,8 @@ app.get("/groupingonehourdata", async (req, res) => {
         `select * from actual_data where station='${data.station}' AND type='type' AND time_stamp > now() - interval 5 minute `
       );
       for await (const ele of select[0]) {
-        // console.log(stat[ele?.groupsensor_name])
         if (stat[ele?.groupsensor_name]) {
           if (stat[ele?.groupsensor_name][ele?.sensor]) {
-            // sta[ele?.groupsensor_name][ele?.sensor]['station'].push(ele?.station)
             stat[ele?.groupsensor_name][ele?.sensor]["lsl"].push(ele?.lsl);
             stat[ele?.groupsensor_name][ele?.sensor]["hsl"].push(ele?.hsl);
             stat[ele?.groupsensor_name][ele?.sensor]["xaxis"].push(
@@ -296,7 +225,6 @@ app.get("/groupingonehourdata", async (req, res) => {
         } else {
           stat[ele?.groupsensor_name] = {};
           if (stat[ele?.groupsensor_name][ele?.sensor]) {
-            // sta[ele?.groupsensor_name][ele?.sensor]['station'].push(ele?.station)
             stat[ele?.groupsensor_name][ele?.sensor]["lsl"].push(ele?.lsl);
             stat[ele?.groupsensor_name][ele?.sensor]["hsl"].push(ele?.hsl);
             stat[ele?.groupsensor_name][ele?.sensor]["xaxis"].push(
@@ -320,58 +248,54 @@ app.get("/groupingonehourdata", async (req, res) => {
         }
       }
     }
-    // console.clear()
     await res.json({ status: true, Result: stat });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
-
 // app.get("/generateplcdata", async (req, res) => {
-//     var plcData={}
-//     const select =  await sequelize.query(`select * from grouping_configuration`);
-//     for await (const ele of select[0]) {
-//         plcData[ele?.station_name+"_"+ele?.sensor_name]=ele?.tag_address
+//   //  Update or modified tags send to plc service.
+//   var plcData = {};
+//   const select = await sequelize.query(`select * from grouping_configuration`);
+//   for await (const ele of select[0]) {
+//     plcData[ele?.station_name + "_" + ele?.sensor_name] = ele?.tag_address;
+//   }
+//   var plcconfig = [];
+//   plcconfig.push({
+//     name: "plc-1",
+//     // IP: `opc.tcp://${ip.connectionURLS}:4840`, Arut
+//     IP: `${ip.connectionURLS}`,
+//     rack: "0",
+//     slot: "1",
+//     port: "102",
+//     refresh_rate: "1000",
+//     Tags: plcData,
+//   });
+//   fs.writeFile(
+//     "../plcService/configuration/plcConfig.json",
+//     JSON.stringify({ plc_count: [0], plc_config: plcconfig }),
+//     function (err) {
+//       if (err) return console.log(err);
 //     }
-//     var plcconfig=[]
-//                     plcconfig.push({
-//                         "name":"plc-1",
-//                         "IP":"192.168.18.99",
-//                         "rack":"0",
-//                         "slot":"1",
-//                         "port":"102",
-//                         "refresh_rate":"1000",
-//                         "Tags":plcData
-//             })
-//             //console.log({plcconfig:plcconfig})
-//         fs.writeFile('../plcService/configuration/plcConfig.json', JSON.stringify({"plc_count":[0],plc_config:plcconfig}), function (err) {
-//             if (err) return console.log(err);
-//             })
-// })
+//   );
+// });
 
-// *********** opcua ***********
+// Below code is to be enable using OPCUA tags
 app.get("/generateplcdata", async (req, res) => {
-  var plcData = {};
-  const select = await sequelize.query(`select * from grouping_configuration`);
-  for await (const ele of select[0]) {
-    plcData[ele?.station_name + "_" + ele?.sensor_name] = ele?.tag_address;
-  }
-  var plcconfig = [];
-//   const url = `opc.tcp://${}:4840`;
-const ip = require('../OPC-UA-Client/plcRead/connectionurl');
-  plcconfig.push({
-    name: "plc-1",
-    IP: `opc.tcp://${ip.connectionURLS}:4840`,
-    refresh_rate: "1500",
-    Tags: plcData,
-  });
-  console.log({plcconfig:plcconfig})
-  // fs.writeFile('../plcService/configuration/opcuaConfig.json', JSON.stringify({"plc_count":[0],plc_config:plcconfig}), function (err) {
-  fs.writeFile(
-    "../OPC-UA-Client/configuration/opcuaConfig-teal.json",
-    JSON.stringify({ plc_count: [0], plc_config: plcconfig }),
-    function (err) {
-      if (err) return console.log(err);
+//  Update or modified tags send to OPC-UA-Client service.
+    var plcData={}
+    const select =  await sequelize.query(`select * from grouping_configuration`);
+    for await (const ele of select[0]) {
+        plcData[ele?.station_name+"_"+ele?.sensor_name]=ele?.tag_address
     }
-  );
-});
+    var plcconfig=[]
+            plcconfig.push({
+                "name":"plc-1",
+                // "IP": `opc.tcp://${ip.connectionURLS}:4840`,
+                "refresh_rate":"1500",
+                "Tags":plcData
+    })
+    fs.writeFile('../OPC-UA-Client/configuration/opcuaConfig-teal.json', JSON.stringify({"plc_count":[0],plc_config:plcconfig}), function (err) {
+    if (err) return console.log(err);
+    })
+})

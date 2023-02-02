@@ -1,72 +1,61 @@
 import { height } from '@mui/system';
 import axios from 'axios';
 import React, {useState} from 'react';
-import Dropzone from 'react-dropzone';
+// import Dropzone from 'react-dropzone';
 import url from '../../configuration/url.json';
 
 // import { parse } from "papaparse";
 
 import * as XLSX from "xlsx";
-function Fileupload() {
-const [items, setItems] = useState([]);
+ function Fileupload() {
+  const [items, setItems] = useState([]);
+  var apiCall = async(d)=>{
+    const fileupload  = await axios.post(url?.baseurl2+"upload",d);
+  }
 
-const apiCall = async (data)=>{
-  try{
-    const fileupload  = await axios.post(url?.baseurl2+"upload",data);
-  } catch (error) {
-    console.log(error)
-}
-  
-console.log("fileupload",data);
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
 
-};
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
 
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
 
-const readExcel = async (file) => {
-  const promise = new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(file);
-    
+        const wsname = wb.SheetNames[0];
 
-    fileReader.onload = (e) => {
-      const bufferArray = e.target.result;
+        const ws = wb.Sheets[wsname];
 
-      const wb = XLSX.read(bufferArray, { type: "buffer" });
+        const data = XLSX.utils.sheet_to_json(ws);
 
-      const wsname = wb.SheetNames[0];
+        resolve(data);
+      };
 
-      const ws = wb.Sheets[wsname];
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
 
-      const data = XLSX.utils.sheet_to_json(ws);
+    promise.then((d) => {
+      apiCall(d);
+      setItems(d);
+      
+    });
+  };
 
-      resolve(data);
-      apiCall(data);
-      console.log("data",data);
-    };
+  return (
+    <div>
+      <input
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          readExcel(file);
+        }}
+      />
+    </div>
+  );
 
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-
-  promise.then((d) => {
-    setItems(d);
-  });
-};
-
-
-
-return (
-  <div className="Container" onclick={()=>{document.getElementById("upfile").click()}}>
-    <input id='upfile'
-      type="file" 
-      onChange={(e) => {
-        const file = e.target.files[0];
-        readExcel(file);
-      }}
-    />
-  </div>
-);
 
 }
 

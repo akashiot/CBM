@@ -4,10 +4,10 @@ import {useNavigate} from "react-router-dom";
 import {faBars,faGauge,faFileContract,faScrewdriverWrench,faCircleUser, faAngleLeft, faRightFromBracket, faTriangleExclamation,  faClock} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import url from '../configuration/url.json';
-// import url from '../index'
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context"; 
 import moment from 'moment';
+import settings from '../pages/settings';
 import {
   MDBNavbar,
   MDBContainer,
@@ -28,25 +28,22 @@ import { Link } from 'react-router-dom';
 import { Dropdown, Menu, message, Popconfirm } from 'antd';
 
  function Navbar(props) {
+    // Calling context value from main component
     const { groupSensorList,setGroupSensorList} =useContext(UserContext)
     const navigate = useNavigate();
     const [showBasic, setShowBasic] = useState(false);
-    const [name, setName] = useState(false);  
-    const [basicActive, setBasicActive] = useState();   
     
     const confirm = () => {
+        //1. Method to remove username and token when user logs out
+        //2. If user logged out it route to login page
         localStorage.removeItem("token");
         localStorage.removeItem("username");
-        // message.success("Logged out successfully!",1) ;
         navigate('/')      
       };
-
     async function getGroupSensor() {
         try {
             const groupSensor = await axios.get(url?.baseurl2+'configuration/getGroupingsensor')
             if(groupSensor?.data?.status===true){
-                // setListOfStation(groupSensor?.data?.data);
-                // setTrigger((p)=>!p)
                 setGroupSensorList(groupSensor?.data?.Result);
             }
             else if(groupSensor?.data?.status===false){
@@ -64,7 +61,6 @@ import { Dropdown, Menu, message, Popconfirm } from 'antd';
                 key: '0',
                 label:(
                     <MDBTypography tag={"h6"} className='text-center fw-bold pt-2 text-primary text-capitalize'>{localStorage.getItem("username")}
-                        {/* <FontAwesomeIcon icon={faUser} className="text-primary fs-5 pr-2 "/><span className='px-1'>Username</span> */}
                     </MDBTypography>
                 )
             },
@@ -79,9 +75,6 @@ import { Dropdown, Menu, message, Popconfirm } from 'antd';
                     <MDBTypography tag={'h6'} className='fs-6 fw-bold text-start pt-1 px-2 d-flex'>
                        <FontAwesomeIcon icon={faRightFromBracket} className="text-danger fs-5 pr-1 "/><span className='px-1'>Logout</span>
                     </MDBTypography>
-                    {/* <MDBBadge pill className='mx-2' color='danger' light>
-                        <FontAwesomeIcon icon={faRightFromBracket} className="text-danger fs-6 px-1"/><span className='fs-6 fw-bold px-2'> Logout</span>
-                    </MDBBadge> */}
                 </Popconfirm> 
               ),
             }
@@ -92,6 +85,7 @@ import { Dropdown, Menu, message, Popconfirm } from 'antd';
 
 
       return (
+        // UI Components
          <MDBNavbar expand="lg" light className="shadow border sticky" style={{borderRadius:'50px',backgroundColor:"#fff"}}>
                 
             <MDBContainer fluid>
@@ -152,7 +146,6 @@ import { Dropdown, Menu, message, Popconfirm } from 'antd';
                     
                     <div className='text-center pt-2 px-2'>
                         <Dropdown overlay={menu} placement="bottom" trigger={['click']} arrow>
-                            {/* <FontAwesomeIcon icon={faBars}  className="pt-0 px-3 fs-4"/> */}
                             <img src={User} className="rounded-circle border border-info hover-shadow" id='profilepic' height="40"/>
                         </Dropdown>
                     </div>    

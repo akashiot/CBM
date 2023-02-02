@@ -1,1 +1,23 @@
-{"plc_count":[0],"plc_config":[{"name":"plc-1","IP":"192.168.18.99","rack":"0","slot":"1","port":"102","refresh_rate":"1000","Tags":{"tightining_3phasecurrent":"ns=2;i=3","op180 - leak testing _metal senser":"ns=2;i=4"}}]}
+{
+    "plc_count": [
+        0
+    ],
+    "plc_config": [
+        {
+            "name": "plc-1",
+            "IP": "192.168.18.99",
+            "rack": "0",
+            "slot": "1",
+            "port": "102",
+            "refresh_rate": "1000",
+            "Tags": {
+                "assembly_motor torque": "db7,real0",
+                "laser marking_oil temperature": "db7,real4",
+                "laser marking_heat": "db7,dint24",
+                "tightening_process temperature": "db7,dint20",
+                "laser marking_battery temperature": "db7,dint20",
+                "tightening_process temperature1": "DB7,Dint12"
+            }
+        }
+    ]
+}

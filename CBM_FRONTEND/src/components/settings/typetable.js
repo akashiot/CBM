@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
-// for (let i = 0; i < 10; i++) {
-//   originData.push({
-//     key: i.toString(),
-//     name: `Edrward ${i}`,
-//     age: 32,
-//     address: `London Park no. ${i}`,
-//   });
-// }
+
 const EditableCell = ({
   editing,
   dataIndex,
@@ -44,15 +37,12 @@ const EditableCell = ({
 };
 const Typetable = (props) => {
   const [tableData,setTableData]=useState([])
-
-  // console.log(props?.data);
-
   useEffect(()=>{
+    // Assigning sensor data to table when groupwise is enabled
     const originData = [];
     setTableData([]);
     if(props?.data){
       props?.data.forEach((e,i)=>{
-        // console.log(i);
         originData.push({
           key: i.toString(),
           sensor_name: `Edrward ${i}`,
@@ -65,12 +55,10 @@ const Typetable = (props) => {
       setTableData(props?.data)
     }
   },[props?.trigger])
-  // console.log(props?.trigger);
   
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
   const [editingKey, setEditingKey] = useState('');
-  console.log(data);
   const isEditing = (record) => record.key === editingKey;
   const edit = (record) => {
     form.setFieldsValue({

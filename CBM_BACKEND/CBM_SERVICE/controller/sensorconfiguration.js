@@ -1,9 +1,7 @@
 const db= require('../model/dbconfig')
-const moment=require('moment');
-
 exports.addSensorvalue =async function(req,res){
+    // Add new sensor type
     try {
-        var timestamp =moment().format('YYYY-MM-DD HH:mm:ss:SSS')
         db.query(`SELECT * FROM limit_configuration where sensor_name='${req.body.sensor_name}' `, function (err, rows) {
             if(err) console.log(err)
             if (rows.length!==1) {
@@ -20,10 +18,11 @@ exports.addSensorvalue =async function(req,res){
             }
         })
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }       
 }
 exports.updateSensorvalue=async function(req,res){
+    // Update the configured sensor type
     try {
         db.query(`SELECT * FROM limit_configuration where limits_id='${req.body.id}' `, function (err, rows) {
             if(err) console.log(err)
@@ -43,10 +42,11 @@ exports.updateSensorvalue=async function(req,res){
             }
         })
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 exports.deleteSensorvalue=async function(req,res){
+    // Delete the selected sensor type
     try {
         db.query(`SELECT * FROM limit_configuration where limits_id='${req.body.id}' `, function (err, rows) {        
             if(err) console.log(err)            
@@ -59,10 +59,11 @@ exports.deleteSensorvalue=async function(req,res){
             }           
         })
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 exports.getSensorvalue=async function(req,res){
+    // Get the list of sensor type
     try {
         db.query(`SELECT  * FROM limit_configuration `, function (err, rows) {
             if(rows.length>=1){
@@ -73,6 +74,6 @@ exports.getSensorvalue=async function(req,res){
             }
         })
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }

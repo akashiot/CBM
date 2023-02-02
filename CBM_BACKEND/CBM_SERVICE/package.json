@@ -15,9 +15,11 @@
     "nodemon": "^2.0.20",
     "sequelize": "^6.25.5",
     "sqlite3": "^5.1.2",
-    "store2": "^2.14.2"
+    "store2": "^2.14.2",
+    "xlsx": "^0.18.5"
   },
-  "scripts":{
-    "start":"nodemon index.js"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   }
 }
