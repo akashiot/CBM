@@ -186,7 +186,7 @@ const Settingtable = (props) => {
     {
       title: 'Id',
       dataIndex: 'id',
-      width: '5%',
+      width: '10%',
       editable: true,
     },{
       title: 'Sensor Name',
@@ -246,33 +246,33 @@ const Settingtable = (props) => {
       })
     },
     {
-      title: 'LSL',
+      title: 'LSL(sec)',
       dataIndex: 'lsl',
-      width: '10%',
+      width: '15%',
       editable: true,
     },
     {
-      title: 'LSL Delay',
+      title: 'LSL Delay(sec)',
       dataIndex: 'lslDelay',
-      width: '10%',
+      width: '20%',
       editable: true,
     },
     {
-      title: 'HSL',
+      title: 'HSL(sec)',
       dataIndex: 'hsl',
-      width: '10%',
+      width: '15%',
       editable: true,
     },
     {
-      title: 'HSL Delay',
+      title: 'HSL Delay(sec)',
       dataIndex: 'hslDelay',
-      width: '10%',
+      width: '20%',
       editable: true,
     },
     {
       title: 'Description',
       dataIndex: 'info',
-      width: '25%',
+      width: '30%',
       editable: true,
       ellipsis: {
         showTitle: false,
@@ -316,7 +316,7 @@ const Settingtable = (props) => {
     {
       title: 'Remove',
       dataIndex: 'remove',
-      width:'10%',
+      width:'15%',
       render: (_ ,record) => {
         return <Popconfirm title="Are you sure to delete this sensor?" onConfirm={()=>{remove(record.key)}} okText="Yes" cancelText="No">
                     <FontAwesomeIcon icon={faTrash} className="text-danger"/>

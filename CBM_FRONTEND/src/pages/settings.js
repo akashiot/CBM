@@ -695,7 +695,7 @@ export default function Settings() {
                       </MDBCol>
                       <MDBCol lg={"6"} className="px-5 py-1">
                         <label className="fw-bold px-1">
-                          Type<span className="text-danger fw-bold">*</span>
+                          Sensor Type<span className="text-danger fw-bold">*</span>
                         </label>
                         <div className="d-flex">
                           <select
@@ -887,7 +887,7 @@ export default function Settings() {
           <MDBModalContent className="shadow-lg">
             <MDBModalHeader className="bg-info">
               <MDBModalTitle className="fw-bold text-light">
-                Sensor List
+                Sensor Type List
               </MDBModalTitle>
               <MDBBtn
                 className="btn-close"
@@ -912,7 +912,7 @@ export default function Settings() {
                   toggleShow();
                 }}
               >
-                Add Sensor
+                Add Sensor Type
               </MDBBtn>
               <MDBBtn color="info" rounded onClick={showSensorListModal}>
                 Cancel
@@ -934,7 +934,7 @@ export default function Settings() {
             <MDBModalHeader className="bg-info">
               <MDBModalTitle className="text-light fw-bold">
                 <FontAwesomeIcon icon={faPlus} className="px-2 fs-5" />
-                Add Sensor
+                Add Sensor Type
               </MDBModalTitle>
               <MDBBtn
                 className="btn-close"

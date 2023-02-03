@@ -1,6 +1,6 @@
 {
     "login":"http://192.168.20.104:9000/historicapi/api/UserSettings/Check_login/",
     "baseurl1":"http://192.168.18.51:3001/",
-    "baseurl2":"http://172.22.59.68:7004/",
+    "baseurl2":"http://192.168.173.216:7004/",
     "baseurl3":"http://192.168.18.51:7004/"
 }
