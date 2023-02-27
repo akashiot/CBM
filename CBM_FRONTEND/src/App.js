@@ -33,7 +33,7 @@ function App() {
     const [plcLiveData,setPlcLiveData]=useState("")
     const [onehourData,setOnehourData]=useState([])
     // this not used if we comment the code we have to check the other file since it used on other files
-    const [onehourGroupData,setOnehourGroupData]=useState("")
+    const [onehourGroupData,setOnehourGroupData]=useState("")    
     const [oneHourStationData,getOneHourStationData]=useState([])
     const [oneHourGroupData,getOneHourGroupData]=useState([])
     const [alert,setAlert]=useState("")
@@ -50,6 +50,7 @@ function App() {
 
     const [startLimit,setStartLimit]=useState(0)
     const [endLimit,setEndLimit]=useState(1000)
+    const [refreshChart,setRefreshChart]=useState(false);
     
     async function oneHourData(){
         try {
@@ -72,6 +73,7 @@ function App() {
                 // console.log("Please check connection!"); Arut
                 message.error("Please check connection!");
             }
+            setRefreshChart(!refreshChart);
         } catch (error) {
             console.error(error);
         }
@@ -91,10 +93,10 @@ function App() {
             console.error(error);
         }
     }       
-    useEffect(()=>{
-        getDashboardData()
-    },[invoke])
-        
+        useEffect(()=>{
+            getDashboardData()
+        },[invoke])
+
 
 
 
@@ -105,15 +107,14 @@ function App() {
         else if(command==="groupwise"){
             setOnehourData(oneHourGroupData);
         }
-            oneHourData()
-            oneHourGroupingData()
+        oneHourData()
+        oneHourGroupingData()
     }
     clearInterval(timer);
     timer=setInterval(() => {
         // refresh the dashboard every 2 seconds
         getDashboardData()
     }, 60000);
-
 
   return (
     <MDBContainer fluid>
@@ -145,7 +146,8 @@ function App() {
                 selectReportStation,setSelectReportStation,
                 selectReportIndex,setSelectReportIndex,
                 startLimit,setStartLimit,
-                endLimit,setEndLimit
+                endLimit,setEndLimit,
+                refreshChart,setRefreshChart
                 }}>
                 <Routes>
                     <Route

@@ -7,7 +7,7 @@ import url from '../configuration/url.json';
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context"; 
 import moment from 'moment';
-import settings from '../pages/settings';
+// not imported missing settings.js pages
 import {
   MDBNavbar,
   MDBContainer,

@@ -284,17 +284,18 @@ exports.alertLog = async function (ele, data) {
                         }
                       );
                     }
+                    //original code uncommented
                     //Logging Timelapse
-                    var startLap = moment(alertData[0]?.start_time);
-                    var endLap = moment(timeStamp);
-                    var differLap = moment.duration(endLap.diff(startLap));
-                    db.query(
-                      `update alert_log set timelapse='${differLap.hours()} Hr ${differLap.minutes()} Min ${differLap.seconds()}' where status='Active' AND station='${
-                        element?.station_name
-                      }' AND sensor='${
-                        element?.sensor_name
-                      }' AND alert_type='Low limit' `
-                    );
+                    // var startLap = moment(alertData[0]?.start_time);
+                    // var endLap = moment(timeStamp);
+                    // var differLap = moment.duration(endLap.diff(startLap));
+                    // db.query(
+                    //   `update alert_log set timelapse='${differLap.hours()} Hr ${differLap.minutes()} Min ${differLap.seconds()}' where status='Active' AND station='${
+                    //     element?.station_name
+                    //   }' AND sensor='${
+                    //     element?.sensor_name
+                    //   }' AND alert_type='Low limit' `
+                    // );
                   }
                 }
               );
@@ -480,16 +481,10 @@ exports.alertLog = async function (ele, data) {
                       );
                     }
                     //Logging Timelapse
-                    var startLap = moment(alertData[0]?.start_time);
-                    var endLap = moment(timeStamp);
-                    var differLap = moment.duration(endLap.diff(startLap));
-                    db.query(
-                      `update alert_log set timelapse='${differLap.hours()} Hr ${differLap.minutes()} Min ${differLap.seconds()}' where status='Active' AND station='${
-                        element?.station_name
-                      }' AND sensor='${
-                        element?.sensor_name
-                      }' AND alert_type='High limit' `
-                    );
+                    // var startLap = moment(alertData[0]?.start_time);
+                    // var endLap=moment(timeStamp);
+                    // var differLap=moment.duration(endLap.diff(startLap))
+                    // db.query(`update alert_log set timelapse='${differLap.hours()} Hr ${differLap.minutes()} Min ${differLap.seconds()}' where status='Active' AND station='${element?.station_name}' AND sensor='${element?.sensor_name}' AND alert_type='High limit' `)
                   }
                 }
               );

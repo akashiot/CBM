@@ -96,7 +96,6 @@ const Alarmtable = (props) => {
     Object.keys(data[0]).forEach((e, i) => {
       if (e !== "key" && e !== "alert_id" && e !== "timelapse") {
         if (e === "status") {
-          console.log("e--------",e);
           columns.push({
             title: e.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
               letter.toUpperCase()
@@ -169,13 +168,16 @@ const Alarmtable = (props) => {
               }
             },
           });
-        } else if (e === "alert_no") {
-          columns.push({
-            title: "Alert Id",
-            dataIndex: e,
-            key: e,
-          });
-        } else {
+        } 
+        //This part is missing in new patch
+        // else if (e === "alert_no") {
+        //   columns.push({
+        //     title: "Alert Id",
+        //     dataIndex: e,
+        //     key: e,
+        //   });
+        // }
+         else {
           columns.push({
             title: e.includes("_")
               ? e

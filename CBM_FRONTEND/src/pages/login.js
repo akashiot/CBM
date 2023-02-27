@@ -81,8 +81,6 @@ function Login() {
     }
     function login() {
         // For testing only(used dummy credentials to access the dashboard and other UI).This logic needs to be remove when it is in production.
-        
-        //Arut Remove replace
         let user=formValues.username.replace(/[^a-z]/gi,'').toLowerCase();
         if(user==="admin" && formValues.password==="Admin@123"){
             localStorage.setItem("username",user)

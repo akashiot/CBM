@@ -29,7 +29,7 @@ import Navbar from "../components/navbar";
 import Settingtable from "../components/settings/settingtable";
 import Groupwisetable from "../components/settings/groupwisetable";
 import Sensorlist from "../components/settings/sensorlist";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../components/context";
 import { message } from "antd";
 import axios from "axios";
@@ -360,16 +360,15 @@ export default function Settings() {
       console.error(error);
     }
   }
-  useEffect(() => {
-    // getGroupSensor()
-  });
+//   useEffect(() => {
+//     // getGroupSensor()
+//   });
   async function GroupwiseGroupSensor() {
     // Get sensor list when groupwise is enabled
     try {
       const groupwiseSensor = await axios.get(
         url?.baseurl2 + "configuration/getTypewisedata"
       );
-      console.log(groupwiseSensor?.data?.status);
       if (groupwiseSensor?.data?.status === true) {
         setGroupSensorList(groupwiseSensor?.data?.Result);
         setSwapGrp((p) => !p);
@@ -497,7 +496,7 @@ export default function Settings() {
                   rounded
                   className="fw-bold"
                   onClick={() => {
-                    // getStation();
+                    getStation();
                     getSensors();
                     showModalLarge();
                   }}
@@ -581,15 +580,12 @@ export default function Settings() {
                         ) : (
                           <Groupwisetable
                             data={groupSensorList?.[item]}
-                            station={item}
+                            //station={item}  //Missed in patch
                             getGroup={getGroupSensor}
                             val={item}
                             trigger={swapGrp}
                           />
                         )}
-                        {
-                          // console.log(item)
-                        }
                       </MDBAccordionItem>
                     );
                   })

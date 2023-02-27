@@ -104,11 +104,10 @@ const Groupwisetable = (props) => {
     if(props?.data){
         objkeys=Object.keys(props?.data);
         Object.keys(props?.data).forEach((ele,i)=>{
-          // console.log(ele)
             originData.push({
                 key:i.toString(),
                 id:(i+1).toString(),
-                station:props?.data?.[ele]?.station_name || props?.station,
+                station:props?.data?.[ele]?.station_name, // missing in patch || props?.station
                 name:props?.data?.[ele]?.sensor_name,
                 address:props?.data?.[ele]?.tag_address,
                 unit:props?.data?.[ele]?.unit || "deg c",

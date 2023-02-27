@@ -124,7 +124,7 @@ if(data.length!==0){
   Object.keys(data[0]).forEach((head,i)=>{
     if(head==="start_time" || head==="alert_type" || head==="fault_type" || head==="lsl" || head==="alert_value" || head==="hsl"){
       columns.push({
-        title: head.toLocaleUpperCase(),
+        title: head.includes('_') ? head.replace("_","  ").toLocaleUpperCase() : head.toLocaleUpperCase(),
         dataIndex: head,
         key: head,
         render:( (data,i) => {

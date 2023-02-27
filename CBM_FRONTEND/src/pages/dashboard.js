@@ -34,7 +34,7 @@ function Dashboard(){
         alert,setAlert,
         command,setCommand,
         invoke,setInvoke,
-        radioSelected,setRadioSelected} =useContext(UserContext)
+        radioSelected,setRadioSelected,refreshChart} =useContext(UserContext)
 
     const [station,setStation]=useState(selectStation)
     const [sensorIndex,setSensorIndex]=useState(selectSensorIndex)
@@ -57,11 +57,14 @@ function Dashboard(){
     const [stn,setStn]=useState('')
     const [par,setPar]=useState('')
     const [faultCount,setFaultCount]=useState({})
+    const [showSparkline,setShowSparkline] = useState(true);
     
 
        
     const alarm = async(stn,par)=>{
         // Get last one hour alarm details by selected sensor
+        setStn(stn);
+        setPar(par);
         let typeCount=[]
         try {
             const alert = await axios.post(url?.baseurl2+"alert/alertDetails",{
@@ -69,8 +72,8 @@ function Dashboard(){
                 toDate:moment().format('YYYY-MM-DD HH:mm:ss.SSS')
             })
             if(alert?.data?.status===true){
-                setStn(stn);
-                setPar(par);
+                // setStn(stn);
+                // setPar(par);
                 setAlert(alert?.data?.Result);
                 alert?.data?.Result.forEach((e,i)=>{
                     if(e?.station===stn && e?.sensor===par){
@@ -82,7 +85,7 @@ function Dashboard(){
                 setFaultCount(counts)
             }
             else if(alert?.data?.status===false){
-                message.error(alert?.data?.Result);
+                message.error("No table records found with in last one hour!");
             }
         } catch (error) {
             message.error(error?.message)
@@ -107,67 +110,83 @@ function Dashboard(){
 
     useEffect(()=>{
     setTrigger(!trigger)
-    // Format the groupwise data generate and display the multiline series 
-    let xaxis=[];
-    let series=[];
-    let multiLine=[];
-        if(onehourData?.[multiLineStation]!==undefined){
-            Object.keys(onehourData?.[multiLineStation]).forEach((data,i)=>{
-                if(i===0){
-                    xaxis=onehourData?.[multiLineStation]?.[data]?.xaxis;
-                    series.push(
-                        {
-                            data: onehourData?.[multiLineStation]?.[data]?.lsl,
-                            name:"LSL",
-                            type: 'line',
-                            smooth: true,
-                            showSymbol: false,
-                            animation:false,
-                            lineStyle: {
-                              normal: {
-                                width: 3,
-                                color:"#FFEA00",
-                                type: 'dashed',
-                              }
-                            }
-                          },
-                          {
-                            data: onehourData?.[multiLineStation]?.[data]?.hsl,
-                            name:"HSL",
-                            type: 'line',
-                            smooth: true,
-                            showSymbol: false,
-                            animation:false,
-                            lineStyle: {
-                              normal: {
-                                width: 3,
-                                color:"#00E676",
-                                type: 'dashed'
-                              }
-                            }
-                          }
-                    )
-                  }
-                  multiLine.push({
-                                data: onehourData?.[multiLineStation]?.[data]?.yaxis,
-                                name:data.toUpperCase(),
+    },[refreshChart]);
+
+// Format the groupwise data generate and display the multiline series 
+    function multiLine(station) {
+        let xaxis=[];
+        let series=[];
+        let multiLine=[];
+            if(onehourData?.[station]!==undefined){
+                Object.keys(onehourData?.[station]).forEach((data,i)=>{
+                    if(i===0){
+                        xaxis=onehourData?.[station]?.[data]?.xaxis;
+                        series.push(
+                            {
+                                data: onehourData?.[station]?.[data]?.lsl,
+                                name:"LSL",
                                 type: 'line',
                                 smooth: true,
                                 showSymbol: false,
                                 animation:false,
                                 lineStyle: {
-                                    normal: {
+                                  normal: {
                                     width: 3,
-                                    }
-                                },
-                  })
-            })
-        }
-        let multiSeries=series.concat(multiLine);
+                                    color:"#FFEA00",
+                                    type: 'dashed',
+                                  }
+                                }
+                              },
+                              {
+                                data: onehourData?.[station]?.[data]?.hsl,
+                                name:"HSL",
+                                type: 'line',
+                                smooth: true,
+                                showSymbol: false,
+                                animation:false,
+                                lineStyle: {
+                                  normal: {
+                                    width: 3,
+                                    color:"#00E676",
+                                    type: 'dashed'
+                                  }
+                                }
+                              }
+                        )
+                      }
+                      multiLine.push({
+                                    data: onehourData?.[station]?.[data]?.yaxis,
+                                    name:data.toUpperCase(),
+                                    type: 'line',
+                                    smooth: true,
+                                    showSymbol: false,
+                                    animation:false,
+                                    lineStyle: {
+                                        normal: {
+                                        width: 3,
+                                        }
+                                    },
+                      })
+                })
+            }
+            let multiSeries=series.concat(multiLine);
 
-        setMultiLineXaxis(xaxis);
-        setMultiLineYaxis(multiSeries)
-    });
+            setMultiLineXaxis(xaxis);
+            setMultiLineYaxis(multiSeries)
+    }
+
+
+    const updateChart = async (item) => {
+        await console.time('act')
+        await setMultiLineStation(item);
+        await setInvokeMultiLine(!invokeMulitiLine);
+        await setOverLap(true);
+        await setStation('');
+        await setSensorIndex('');
+        await multiLine(item)
+        await console.timeEnd('act')
+    }
+    
     return(
         // UI components
         <MDBContainer fluid className="py-2" id="container" style={{backgroundColor:"#FAFAFA"}}>
@@ -186,7 +205,7 @@ function Dashboard(){
                                         <th className="text-uppercase fw-bold text-light fs-6">lsl</th>
                                         <th className="text-uppercase fw-bold text-light fs-6">actual</th>
                                         <th className="text-uppercase fw-bold text-light fs-6">hsl</th>
-                                        <th className="text-uppercase fw-bold text-light fs-6">chart</th>
+                                        <th className="text-uppercase fw-bold text-light fs-6" style={showSparkline ? null : {display:"none"}}>chart</th>
                                     </tr>
                                 </MDBTableHead>
                             </MDBTable>
@@ -197,7 +216,7 @@ function Dashboard(){
                             <MDBTypography tag={'h6'} className="fw-bold text-light pt-2">Actual</MDBTypography>
                             <MDBTypography tag={'h6'} className="fw-bold text-light pt-2">HSL</MDBTypography>
                             <MDBTypography tag={'h6'} className="fw-bold text-light pt-2">Alm</MDBTypography>
-                            <MDBTypography tag={'h6'} className="fw-bold text-light pt-2">Chart</MDBTypography>                             
+                            <MDBTypography tag={'h6'} className="fw-bold text-light pt-2" style={showSparkline ? null : {display:"none"}}>Chart</MDBTypography>                             
                         </div>
 
                         <div className="px-3 py-3">
@@ -209,9 +228,11 @@ function Dashboard(){
                                 <label className="fw-bold" hidden={radioSelected ? false : true}>Filter Sensor</label>
                                 <input type={radioSelected ? "text" : "hidden"} className="form-control" placeholder="Enter sensor name to filter" value={filter} onChange={(e)=>{setFilter(e.target.value)}}></input>
                             </MDBCol>
+                            {/* This part missed in patch */}
                             <MDBCol lg="7" className="pt-4">
                                 {err ? <p className="text-danger fw-bold">Sensor Not Found!</p> : null}
                             </MDBCol>
+                            {/* end */}
                          </MDBRow>
                             
                             <div style={{height:'68vh',width:'100%',overflowY:"scroll"}}>
@@ -232,12 +253,9 @@ function Dashboard(){
                                                 {
                                                     radioSelected ? null :
                                                     <div className="d-flex justify-content-end">
-                                                        <MDBBtn rounded color="info" size="sm" className="fw-bold mx-2 mb-2" onClick={()=>{ 
-                                                            setMultiLineStation(item);
-                                                            setInvokeMultiLine(!invokeMulitiLine);
-                                                            setOverLap(true);
-                                                            setStation('');
-                                                            setSensorIndex('')}}>
+                                                        <MDBBtn rounded color="info" size="sm" className="fw-bold mx-2 mb-2" onClick={()=>{ updateChart(item)
+                                                                                                                    
+                                                            }}>
                                                             <FontAwesomeIcon icon={faChartColumn} className="text-light fs-6 px-0"/> All
                                                         </MDBBtn>
                                                     </div>
@@ -280,6 +298,7 @@ function Dashboard(){
                                                                                 setSeriesHSL(data?.hsl);
                                                                                 swap ? 
                                                                                 alarm(item,data?.name) : alarm(data?.name,data?.sensorname)
+                                                                                setTrigger(!trigger);
                                                                             }}>
                                                                                 <td className="fw-bold text-capitalize">{swap ? data?.name : data?.name+" / "+data?.sensorname}
                                                                                 <Popover placement="bottomLeft" title={title} content={description} onMouseEnter={()=>{test(i+1)}}>
@@ -289,9 +308,10 @@ function Dashboard(){
                                                                                 <td className="fw-bold">{data?.lsl.slice(-1)+" "+data?.unit}</td>
                                                                                 <td className="fw-bold">{actual}</td>
                                                                                 <td className="fw-bold">{data?.hsl.slice(-1)+" "+data?.unit}</td>
-                                                                                <td className="fw-bold" style={{width:"200px"}}>
+                                                                                
+                                                                                <td className="fw-bold" style={showSparkline ? {width:"200px"} : {display:"none",width:"200px"}}>
                                                                                     {/* Calling sparkline chart*/}
-                                                                                    <Sparkline series={data?.yaxis || []} trigger={trigger}/>
+                                                                                     <Sparkline series={data?.yaxis} trigger={trigger}/>
                                                                                 </td>
                                                                         </tr>
                                                                 }
@@ -303,6 +323,7 @@ function Dashboard(){
                                         })
                                     }
                                 </MDBAccordion>
+
                                 </div>
                     </MDBCard>
                 </MDBCol>
@@ -374,7 +395,7 @@ function Dashboard(){
                                 overLap ? <div>
                                             {
                                                 // calling multiline chart when groupwise is enabled
-                                                Object.keys(onehourData).indexOf(multiLineStation)!== -1 ?
+                                                Object.keys(onehourData).indexOf(multiLineStation)!== -1 ? 
                                                 <Multilinechart data={onehourData?.[multiLineStation]} station={multiLineStation} x={multiLineXaxis} y={multiLineYaxis} trigger={trigger}/>:null
                                             }  
                                         </div>:

@@ -104,7 +104,6 @@ exports.getGroupingsensorvalue=async function(req,res){
                             sta[ele?.sensor_type][ele?.station_name]['lsl_delay'].ele?.lsl_delay
                             sta[ele?.sensor_type][ele?.station_name]['hsl_delay'].ele?.hsl_delay
                             sta[ele?.station_name][ele?.sensor_name]['description'].ele?.description
-                            console.log('if,if',sta[ele?.station_name][ele?.sensor_name]['sensor_name'].ele?.sensor_name);
                         } else {
                             sta[ele?.station_name][ele?.sensor_name] = {
                                 "id": ele?.grp_id,
@@ -120,7 +119,6 @@ exports.getGroupingsensorvalue=async function(req,res){
                                 "hsl_delay":ele?.hsl_delay,
                                 "description": ele?.description,
                             }
-                            // console.log('if,if,else',sta);
                         }  
                     } 
                     else {
@@ -138,8 +136,6 @@ exports.getGroupingsensorvalue=async function(req,res){
                             sta[ele?.sensor_type][ele?.station_name]['lsl_delay'].ele?.lsl_delay
                             sta[ele?.sensor_type][ele?.station_name]['hsl_delay'].ele?.hsl_delay
                             sta[ele?.station_name][ele?.sensor_name]['description'].ele?.description
-
-                            // console.log('if,else,if',sta);
                         } else {
                             sta[ele?.station_name][ele?.sensor_name] = {
                                 "id": ele?.grp_id,
@@ -155,7 +151,6 @@ exports.getGroupingsensorvalue=async function(req,res){
                                 "hsl_delay":ele?.hsl_delay,
                                 "description": ele?.description,
                             }
-                            // console.log('if,else,if,else',sta);
                         }
                     }
                 }      
@@ -173,24 +168,23 @@ exports.getGroupingtypevalue=async function(req,res){
             const select =  await sequelize.query(`SELECT * FROM grouping_configuration`);
                 for await (const ele of select[0]) {
                     if(sta[ele?.sensor_type]){
-                        if(sta[ele?.sensor_type][ele?.station_name]){
-                            sta[ele?.sensor_type][ele?.station_name]['id'].ele?.grp_id
-                            sta[ele?.sensor_type][ele?.station_name]['station_name'].ele?.station_name
-                            sta[ele?.sensor_type][ele?.station_name]['sensor_name'].ele?.sensor_name
-                            sta[ele?.sensor_type][ele?.station_name]['tag_address'].ele?.tag_address
-                            sta[ele?.sensor_type][ele?.station_name]['unit'].ele?.unit
-                            sta[ele?.sensor_type][ele?.station_name]['manufacture'].ele?.manufacture
-                            sta[ele?.sensor_type][ele?.station_name]['lsl'].ele?.lsl
-                            sta[ele?.sensor_type][ele?.station_name]['hsl'].ele?.hsl
-                            sta[ele?.sensor_type][ele?.station_name]['lsl_delay'].ele?.lsl_delay
-                            sta[ele?.sensor_type][ele?.station_name]['hsl_delay'].ele?.hsl_delay
-                            sta[ele?.sensor_type][ele?.station_name]['description'].ele?.description
-                        console.log('sta',sta)
+                        if(sta[ele?.sensor_type][ele?.sensor_name]){
+                            sta[ele?.sensor_type][ele?.sensor_name]['id'].ele?.grp_id
+                            sta[ele?.sensor_type][ele?.sensor_name]['sensor_name'].ele?.sensor_name
+                            sta[ele?.sensor_type][ele?.sensor_name]['station_name'].ele?.station_name
+                            sta[ele?.sensor_type][ele?.sensor_name]['tag_address'].ele?.tag_address
+                            sta[ele?.sensor_type][ele?.sensor_name]['unit'].ele?.unit
+                            sta[ele?.sensor_type][ele?.sensor_name]['manufacture'].ele?.manufacture
+                            sta[ele?.sensor_type][ele?.sensor_name]['lsl'].ele?.lsl
+                            sta[ele?.sensor_type][ele?.sensor_name]['hsl'].ele?.hsl
+                            sta[ele?.sensor_type][ele?.sensor_name]['lsl_delay'].ele?.lsl_delay
+                            sta[ele?.sensor_type][ele?.sensor_name]['hsl_delay'].ele?.hsl_delay
+                            sta[ele?.sensor_type][ele?.sensor_name]['description'].ele?.description
                         } else {
-                            sta[ele?.sensor_type][ele?.station_name] = {
+                            sta[ele?.sensor_type][ele?.sensor_name] = {
                                 "id": ele?.grp_id,
-                                "station_name": ele?.station_name,
                                 "sensor_name": ele?.sensor_name,
+                                "station_name": ele?.station_name,
                                 "tag_address": ele?.tag_address,
                                 "unit": ele?.unit,
                                 "manufacture": ele?.manufacture,
@@ -204,23 +198,23 @@ exports.getGroupingtypevalue=async function(req,res){
                     } 
                     else {
                         sta[ele?.sensor_type] = {}
-                        if(sta[ele?.sensor_type][ele?.station_name]){
-                            sta[ele?.sensor_type][ele?.station_name]['id'].ele?.grp_id
-                            sta[ele?.sensor_type][ele?.station_name]['station_name'].ele?.station_name
-                            sta[ele?.sensor_type][ele?.station_name]['sensor_name'].ele?.sensor_name
-                            sta[ele?.sensor_type][ele?.station_name]['tag_address'].ele?.tag_address
-                            sta[ele?.station_name][ele?.sensor_name]['unit'].ele?.unit
-                            sta[ele?.sensor_type][ele?.station_name]['manufacture'].ele?.manufacture
-                            sta[ele?.sensor_type][ele?.station_name]['lsl'].ele?.lsl
-                            sta[ele?.sensor_type][ele?.station_name]['hsl'].ele?.hsl
-                            sta[ele?.sensor_type][ele?.station_name]['lsl_delay'].ele?.lsl_delay
-                            sta[ele?.sensor_type][ele?.station_name]['hsl_delay'].ele?.hsl_delay
-                            sta[ele?.sensor_type][ele?.station_name]['description'].ele?.description
+                        if(sta[ele?.sensor_type][ele?.sensor_name]){
+                            sta[ele?.sensor_type][ele?.sensor_name]['id'].ele?.grp_id
+                            sta[ele?.sensor_type][ele?.sensor_name]['sensor_name'].ele?.sensor_name
+                            sta[ele?.sensor_type][ele?.sensor_name]['station_name'].ele?.station_name
+                            sta[ele?.sensor_type][ele?.sensor_name]['tag_address'].ele?.tag_address
+                            sta[ele?.sensor_type][ele?.sensor_name]['unit'].ele?.unit
+                            sta[ele?.sensor_type][ele?.sensor_name]['manufacture'].ele?.manufacture
+                            sta[ele?.sensor_type][ele?.sensor_name]['lsl'].ele?.lsl
+                            sta[ele?.sensor_type][ele?.sensor_name]['hsl'].ele?.hsl
+                            sta[ele?.sensor_type][ele?.sensor_name]['lsl_delay'].ele?.lsl_delay
+                            sta[ele?.sensor_type][ele?.sensor_name]['hsl_delay'].ele?.hsl_delay
+                            sta[ele?.sensor_type][ele?.sensor_name]['description'].ele?.description
                         } else {
-                            sta[ele?.sensor_type][ele?.station_name] = {
+                            sta[ele?.sensor_type][ele?.sensor_name] = {
                                 "id": ele?.grp_id,
-                                "station_name": ele?.station_name,
                                 "sensor_name": ele?.sensor_name,
+                                "station_name": ele?.station_name,
                                 "tag_address": ele?.tag_address,
                                 "unit": ele?.unit,
                                 "manufacture": ele?.manufacture,
