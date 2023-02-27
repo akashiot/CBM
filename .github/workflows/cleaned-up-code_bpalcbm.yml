@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - bpalcbm
 on:
   push:
     branches:
-      - Development
+      - cleaned-up-code
   workflow_dispatch:
 
 jobs:
@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'bpalcbm'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_10023059BC434E08816ADDE4C2ABCC3E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9F22E882F96841A0960186BE6AC2E3CB }}
           package: .
