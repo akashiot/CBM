@@ -225,7 +225,7 @@ exports.alertLog = async function (ele, data) {
                                                                 "YYYY-MM-DD HH:mm:ss.SSS"
                                                               )}</h3>
                                                         </div>`;
-                        emailGeneration(content).catch(console.error);
+                        // emailGeneration(content).catch(console.error);
                       }
                       store.set("lsl_delay", timeStamp);
                     }
@@ -420,7 +420,7 @@ exports.alertLog = async function (ele, data) {
                                                 "YYYY-MM-DD HH:mm:ss.SSS"
                                               )}</h3>
                                         </div>`;
-                        emailGeneration(content).catch(console.error);
+                        // emailGeneration(content).catch(console.error);
                       }
                       store.set("hsl_delay", timeStamp);
                     }
@@ -505,7 +505,7 @@ exports.alertLog = async function (ele, data) {
         .add(30, "minutes")
         .format("YYYY-MM-DD HH:mm:ss.SSS") <= timeStamp
     ) {
-      overallEmailGeneration()
+      // overallEmailGeneration()
       store.set("time", timeStamp);
     }
   } catch (error) {

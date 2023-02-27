@@ -497,7 +497,7 @@ export default function Settings() {
                   rounded
                   className="fw-bold"
                   onClick={() => {
-                    getStation();
+                    // getStation();
                     getSensors();
                     showModalLarge();
                   }}
@@ -651,20 +651,16 @@ export default function Settings() {
                                                                 } */}
                             {[
                               {
-                                Name: "OP180 - Leak Testing ",
-                                Code: "M1",
+                                Name: "OP_10"
                               },
                               {
-                                Name: "tightening",
-                                Code: "M2",
+                                Name: "OP_20"
                               },
                               {
-                                Name: "assembly",
-                                Code: "M3",
+                                Name: "OP_30"
                               },
                               {
-                                Name: "laser marking",
-                                Code: "M4",
+                                Name: "OP_40"
                               },
                             ].map((e, i) => {
                               return (

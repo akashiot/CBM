@@ -13,13 +13,19 @@ var actual = require("./controller/actualValues");
 var reports = require("./controller/report");
 const ip = require("../OPC-UA-Client/plcRead/connectionurl");
 const fileupload = require("../CBM_Service/controller/fileUpload");
+const path = require("path");
+const db = require("../CBM_Service/model/database");
+const CronJob = require('cron').CronJob;
 
-const opcua = `http://${ip.connectionURLS}:3008`;
-const plcurl = `http://${ip.connectionURLS}:3001`;
+// const opcua = `http://${ip.connectionURLS}:3008`; // simu
+// const plcurl = `http://${ip.connectionURLS}:3001`; //simu
+// const opcua = `http://172.22.59.68:3008`;//172.22.59.68
+const plcurl = `http://172.22.59.68:3001`;
 console.log("plcurl endpointUrl", plcurl);
-console.log("opcua endpointUrl", opcua);
+// console.log("opcua endpointUrl", opcua);
 const app = express();
 app.use(cors());
+app.use(express.static(path.join(__dirname + "../../CBM_FRONTEND/build")));
 app.use(bodyparser.json());
 
 const port = 7004;
@@ -87,7 +93,6 @@ app.post("/alert/sensorlist", function (req, res) {
 
 app.post("/upload",(req, res)=>{
   fileupload.insertData(req, res)
-  console.log('req.body',res);
 });
 /*** CONFIGURATION API's END****/
 
@@ -100,7 +105,7 @@ async function valuesReady() {
     // const res = await axios.get(settings.plcUrl + "/getPlcData");
     // "http://192.168.200.216:3001",
     // const res = await axios.get(`http://${ip.connectionURLS}:3001` + "/getPlcData");
-    const res = await axios.get(opcua + "/getopcuadata");
+    const res = await axios.get(plcurl + "/getPlcData");
     const plcs = Object.keys(res?.data);
     plcs.forEach((plc) => {
       var connection = res.data[plc].connection;
@@ -292,6 +297,7 @@ app.get("/generateplcdata", async (req, res) => {
             plcconfig.push({
                 "name":"plc-1",
                 // "IP": `opc.tcp://${ip.connectionURLS}:4840`,
+                // "refresh_rate":"1500",
                 "refresh_rate":"1500",
                 "Tags":plcData
     })
@@ -299,3 +305,20 @@ app.get("/generateplcdata", async (req, res) => {
     if (err) return console.log(err);
     })
 })
+
+function deleteActualData(){
+  const sql = `DELETE from actual_data where time_stamp < now() - interval 5 minute;`
+  db.query(sql,(err,rows)=>{
+    console.log("rows",rows);
+  });
+}
+
+var job = new CronJob(
+	'* * 1 * * *',
+	function() {
+    deleteActualData()
+		console.log('You will see this message every second');
+	},
+	null,
+	false
+);

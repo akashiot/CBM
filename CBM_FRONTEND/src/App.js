@@ -10,7 +10,7 @@ import {UserContext} from './components/context';
 import { MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import url from './configuration/url.json'
-import Fileupload from './components/dragndrop/dragndrop';
+import Fileupload from './pages/draganddrop';
 import { message } from 'antd';
 
 
@@ -67,7 +67,6 @@ function App() {
             if(onehourgroupingdata?.data?.status===true){
                 // API call for getting live data (Groupwise)
                 getOneHourGroupData(onehourgroupingdata?.data?.Result);
-                setOnehourGroupData(onehourgroupingdata?.data?.Result);
             }
             else if(onehourgroupingdata?.data?.status===false){
                 // console.log("Please check connection!"); Arut
@@ -92,9 +91,9 @@ function App() {
             console.error(error);
         }
     }       
-        // useEffect(()=>{
-        //     getDashboardData()
-        // },[invoke])
+    useEffect(()=>{
+        getDashboardData()
+    },[invoke])
         
 
 
@@ -109,13 +108,12 @@ function App() {
             oneHourData()
             oneHourGroupingData()
     }
-   
-
     clearInterval(timer);
     timer=setInterval(() => {
         // refresh the dashboard every 2 seconds
         getDashboardData()
-    }, 2000);
+    }, 60000);
+
 
   return (
     <MDBContainer fluid>

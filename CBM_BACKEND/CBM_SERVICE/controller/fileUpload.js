@@ -5,8 +5,9 @@ const app = express();
 
 exports.insertData =async function(req,res){
     let count;
-    const response = req.body[0];
-    try {  
+    const response = req.body;
+    console.log(response)
+    try {
         // console.log('Object.keys(req.body[0]',Object.keys(req.body[0]) );
         db.query(`SELECT COUNT(*) AS NUMBEROFCOLUMNS FROM INFORMATION_SCHEMA.COLUMNS
         WHERE table_schema = 'cbm' AND table_name = 'grouping_configuration_copy'`,(err,rows)=>{

@@ -1,31 +1,35 @@
 const {OPCUAClient, AttributeIds, StatusCode, check_flag}=require('node-opcua')
 const async =require('async')
 const express =require('express')
+const moment =require('moment')
+var timestamp=moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
 const app=express()
 const datafromplc={}
 var nodeidread={}
 var refresh={}
-const port=3008;
-const ip = require('../plcRead/connectionurl');
-
-const connectionURL = `opc.tcp://${ip.connectionURLS}:4840`;
-console.log(connectionURL);
-
-app.get("/getopcuadata", async (req, res) => {
-    // Pass the actual PLC data based on the OPCUA configuration
+const client={}
+const the_session={}
+let plcConnected=false
+const port=3001;
+const v8 = require('node:v8');
+const stream = v8.getHeapSnapshot();
+stream.addListener("close",()=>{
+    app.listen(`${port}`,()=>{
+        console.log(`server stoped and again listening port on ${port}`);
+    })
+})
+app.get("/getplcData", async (req, res) => {
     return res.json(datafromplc)
 })
 app.listen(`${port}`,()=>{
-    // OPCUA services execution started on the configured port.
     console.log(`listening port on ${port}`);
 })
+
 exports.plcReadData = async function (plcinfo){
-// Get response from OPCUA tags
-// const endpointUrl=plcinfo.IP Arut
-const endpointUrl = connectionURL;  // It will take the local ip address
-const client = OPCUAClient.create({endpointMustExist:false})
-// Retrying connection if device connection is lost
-client.on("backoff",(retry,delay)=>{
+const endpointUrl=plcinfo.IP
+client[plcinfo.name]  = OPCUAClient.create({endpointMustExist:false})
+
+client[plcinfo.name].on("backoff",(retry,delay)=>{
     console.log(`try to connect ${endpointUrl},retry ${retry} next attemt in ${delay/1000} sec`)
     if (retry) {
         datafromplc[plcinfo.name]={}
@@ -33,10 +37,9 @@ client.on("backoff",(retry,delay)=>{
     }
     
 })
-// 
 async.series([
     function(callback){
-        client.connect(endpointUrl,(err)=>{
+        client[plcinfo.name].connect(endpointUrl,(err)=>{
             if(err){
                 console.log(`can't connect to endpointUrl : ${endpointUrl}`)
             }
@@ -46,46 +49,56 @@ async.series([
                 console.log("connected !!")
         }
         callback()
-
         })
     },
-    // Authentication for device credentials
-    function(callback){
-        // client.createSession({userName:url.username,password:url.password},(err,session)=>{      //new line
-        client.createSession((err,session)=>{
-            if(err) {console.log("Invalid username or password"); return}
-            // else if(session){
-                the_session=session
-                callback()
-            // }            
-        })
+    function(callback) {
+        if (plcinfo.username!='') {
+            client[plcinfo.name].createSession({userName:plcinfo.username,password:plcinfo.password},(err,session)=>{      //new line
+                    if(err) { console.log("Invalid username or password"); return }
+                        the_session[plcinfo.name]=session
+                        callback()
+                })
+        } else {
+                client[plcinfo.name].createSession((err,session)=>{
+                    if(err) {console.log("Invalid username or password"); return}
+                    the_session[plcinfo.name]=session
+                        callback()
+                })
+        }      
     },  
-     function (){  
-        //Reading data from plc based on the OPCUA configuration     
+    //reading data from plc    
+     function (){
         var sa =Object.keys(plcinfo.Tags)
         clearInterval(refresh[plcinfo.name])
-        sa.forEach(element => { 
+        sa.forEach(element => {
             refresh[plcinfo.name]=setInterval(() => {
             const nodeToRead=[
                 {nodeId:plcinfo.Tags[element],attributeId:AttributeIds.Value}
             ]
                     for (var i = 0; i < nodeToRead.length; i++) {
                         const element1 = nodeToRead[i];
-                        the_session.read(element1,function(err,dataValue){
+                        the_session[plcinfo.name].read(element1,function(err,dataValue){
                             if(dataValue) {
                             datafromplc[plcinfo.name]={}
                             datafromplc[plcinfo.name]['connection']=true
-                            nodeidread[element]=dataValue.value.value[1]
+                            if(!nodeidread[plcinfo.name]) nodeidread[plcinfo.name] = {}
+                            nodeidread[plcinfo.name][element]=dataValue.value.value[1]   //sim
+                            // nodeidread[plcinfo.name][element]=dataValue.value.value
                         }
-                        Object.keys(nodeidread).forEach(key => {
-                            const station= key.split('_')[0]+ '_' + key.split('_')[1]
+                        Object.keys(nodeidread[plcinfo.name]).forEach(key => {
+                            const station= key.split('_')[0] + "_" +key.split('_')[1] //sim
+                            // const station= key.split('_')[0]
                             if(!datafromplc[plcinfo.name][station]) datafromplc[plcinfo.name][station]={}
-                            datafromplc[plcinfo.name][station][key.split("_").slice(2).join("_")]=nodeidread[key]
+                            datafromplc[plcinfo.name][station][key.split("_").slice(2).join("_")] = nodeidread[plcinfo.name][key] //sim
+                            // datafromplc[plcinfo.name][station][key.split("_").slice(1).join("_")] = nodeidread[plcinfo.name][key]
                         });
                     });
                      }
+                //console.log(datafromplc)
         }, plcinfo.refresh_rate );
     })
+    // });
     }
 ])
 }
+// opc.tcp://HTLP0002:4334/UA/MyLittleServer
