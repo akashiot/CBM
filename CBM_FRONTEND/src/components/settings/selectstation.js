@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { message } from "antd";
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/url.json'
+import url from '../../configuration/url.json'
 
 export default function Selectstation(){
     const [select,setSelect]=useState([])

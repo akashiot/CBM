@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 
 function Reportchart(props){
+  // Assigning data to chart when stationwise enabled
+  // Variable options contains default configuration of chart
     const options = {
         textStyle:{
           fontWeight : 'bold',

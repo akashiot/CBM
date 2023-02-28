@@ -1,0 +1,29 @@
+{
+    "apps":[
+        {
+            "name": "opcuaclient",
+            "cwd":"/CBM/CBM BPAL/CBM_BACKEND/OPC-UA-Client",
+            "script": "index.js",
+            "watch":true,
+            "ignore_watch": ["node_modules"]
+
+        },
+        {
+            "name": "cbmservice",
+            "cwd":"/CBM/CBM BPAL/CBM_BACKEND/CBM_Service",
+            "script": "index.js",
+            "watch":true,
+            "ignore_watch": ["node_modules"],
+            "restart_delay": 10000
+
+        },
+        {
+            "name":"Pythonsim1",
+            "cwd":"D:/CBM/Kantara",
+            "script":"python_cbm_Simulation_server1.py",
+            "watch":true,
+            "ignore_watch":["venv"]
+        }
+
+    ]
+}

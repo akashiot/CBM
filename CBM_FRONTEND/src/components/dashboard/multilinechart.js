@@ -1,14 +1,14 @@
 import ReactECharts from 'echarts-for-react';
 import { useEffect, useState } from 'react';
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/chartseries.json'
 
 export default function Multilinechart(props) {
-  
+  // Multiline chart variables
   const [chartOption,setChartOption]=useState({})
   const [xAxis,setXAxis]=useState([])
   const [yAxis,setYAxis]=useState([])
   const [clear,setClear]=useState(false)
 
+  // Assigning multiline series data to chart
 
   useEffect(()=>{
     setClear(false)
@@ -61,19 +61,15 @@ export default function Multilinechart(props) {
                         pieces:[
                           {
                             min:-5,
-                            // max:10,
                             max:parseFloat(yAxis[0]?.data.slice(-1)[0]) || 0,
                             color:"#FFEA00"
                           },
                           {
-                            // min: 10,
-                            // max: 30,
                             min:parseFloat(yAxis[0]?.data.slice(-1)[0]) || 0,
                             max:parseFloat(yAxis[1]?.data.slice(-1)[0]) || 0,
                             color:"#00E676"
                           },
                           {
-                            // min: 30,
                             min: parseFloat(yAxis[1]?.data.slice(-1)[0]) || 0,
                             color:"#FF1744"
                           }
@@ -92,11 +88,7 @@ export default function Multilinechart(props) {
         setYAxis(props?.y)
         setChartOption(options);
       }
-    
   },[props?.trigger])
-//  console.log(props?.station);
 
- 
- 
     return <ReactECharts option={chartOption} style={{width:'100%', height:"100%", minHeight:"430px"}}/>
 }

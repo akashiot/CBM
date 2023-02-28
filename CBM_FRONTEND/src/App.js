@@ -10,7 +10,8 @@ import {UserContext} from './components/context';
 import { MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import url from './configuration/url.json'
-
+import Fileupload from './pages/draganddrop';
+import { message } from 'antd';
 
 
 let timer;
@@ -31,6 +32,7 @@ function App() {
 
     const [plcLiveData,setPlcLiveData]=useState("")
     const [onehourData,setOnehourData]=useState([])
+    // this not used if we comment the code we have to check the other file since it used on other files
     const [onehourGroupData,setOnehourGroupData]=useState("")    
     const [oneHourStationData,getOneHourStationData]=useState([])
     const [oneHourGroupData,getOneHourGroupData]=useState([])
@@ -48,45 +50,37 @@ function App() {
 
     const [startLimit,setStartLimit]=useState(0)
     const [endLimit,setEndLimit]=useState(1000)
-    const [ip, setIP] = useState('');
-
-    //creating function to load ip address from the API
-    const getData = async () => {
-      const res = await axios.get('https://geolocation-db.com/json/')
-      console.log(res.data);
-      setIP(res.data.IPv4)
-    }
+    const [refreshChart,setRefreshChart]=useState(false);
     
-    useEffect( () => {
-      //passing getData method to the lifecycle method
-      getData()
-  
-    }, [])
-    
-
     async function oneHourData(){
         try {
             const onehourdata=await axios.get(url?.baseurl2+"onehourdata")
             const onehourgroupingdata=await axios.get(url?.baseurl2+"groupingonehourdata")
 
             if(onehourdata?.data?.status===true){
+                // API call for getting live data (Stationwise)
                 getOneHourStationData(onehourdata?.data?.Result);
             }
             else if(onehourdata?.data?.status===false){
-                console.log("Please check connection!");
+                // console.log("Please check connection!"); Arut
+                message.error("Please check connection!");
             }
             if(onehourgroupingdata?.data?.status===true){
+                // API call for getting live data (Groupwise)
                 getOneHourGroupData(onehourgroupingdata?.data?.Result);
             }
             else if(onehourgroupingdata?.data?.status===false){
-                console.log("Please check connection!");
+                // console.log("Please check connection!"); Arut
+                message.error("Please check connection!");
             }
+            setRefreshChart(!refreshChart);
         } catch (error) {
             console.error(error);
         }
     }
-
+    // This setOnehourGroupData is used in oneHourData
     async function oneHourGroupingData(){
+        // API call for getting live data (Groupwise)
         try {
             const onehourgroupingdata=await axios.get(url?.baseurl2+"groupingonehourdata")
             if(onehourgroupingdata?.data?.status===true){
@@ -105,6 +99,7 @@ function App() {
 
 
 
+
     const getDashboardData = () => {
         if(command==="stationwise"){
             setOnehourData(oneHourStationData);
@@ -115,12 +110,11 @@ function App() {
         oneHourData()
         oneHourGroupingData()
     }
-   
-
     clearInterval(timer);
     timer=setInterval(() => {
+        // refresh the dashboard every 2 seconds
         getDashboardData()
-    }, 2000);
+    }, 60000);
 
   return (
     <MDBContainer fluid>
@@ -152,7 +146,8 @@ function App() {
                 selectReportStation,setSelectReportStation,
                 selectReportIndex,setSelectReportIndex,
                 startLimit,setStartLimit,
-                endLimit,setEndLimit
+                endLimit,setEndLimit,
+                refreshChart,setRefreshChart
                 }}>
                 <Routes>
                     <Route
@@ -174,6 +169,10 @@ function App() {
                     <Route
                         path="/settings"
                         element={ <Settings /> }
+                    /> 
+                    <Route
+                        path="/upload"
+                        element={ <Fileupload /> }
                     /> 
                 </Routes>
             </UserContext.Provider>

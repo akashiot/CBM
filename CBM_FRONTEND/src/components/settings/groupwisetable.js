@@ -3,7 +3,7 @@ import { Form, Input, InputNumber, Popconfirm, Table, Typography, message } from
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/url.json'
+import url from '../../configuration/url.json'
 
 const EditableCell = ({
   editing,
@@ -45,9 +45,8 @@ const Groupwisetable = (props) => {
   const [data, setData] = useState([]);
   const [keys,setKeys] = useState([]);
 
-
   async function updateGroupingSensor(id,sensor,address,unit,make,type,lsl,hsl,lslDelay,hslDelay,description){
-    // console.log(id,sensor,type,address,make,lsl,hsl,description);
+    // Update sensor details
     const msg=message.loading("Updating sensor details...",0)
     try {
           const updateGroupingSensor=await axios.post(url?.baseurl2+"configuration/updateGroupingsensor",{
@@ -76,8 +75,8 @@ const Groupwisetable = (props) => {
       console.error(error)  
     }
   }
-
   async function deleteGroupingSensor(id){
+    // Method for delete selected sensor
     const msg=message.loading("Deleting sensor details...",0)
     try {
       const deleteGroupingSensor = await axios.post(url?.baseurl2+'configuration/deleteGroupingsensor',{
@@ -101,13 +100,14 @@ const Groupwisetable = (props) => {
   useEffect(()=>{
     const originData = [];
     let objkeys=[];
+    // Assigning sensor data to tables when groupwise enabled
     if(props?.data){
         objkeys=Object.keys(props?.data);
         Object.keys(props?.data).forEach((ele,i)=>{
             originData.push({
                 key:i.toString(),
                 id:(i+1).toString(),
-                station:props?.data?.[ele]?.station_name,
+                station:props?.data?.[ele]?.station_name, // missing in patch || props?.station
                 name:props?.data?.[ele]?.sensor_name,
                 address:props?.data?.[ele]?.tag_address,
                 unit:props?.data?.[ele]?.unit || "deg c",
@@ -173,7 +173,6 @@ const Groupwisetable = (props) => {
     }
   };
   const remove = (e) =>{
-    // deleteGroupingSensor(data[e]?.id);
     deleteGroupingSensor(props?.data?.[keys[parseInt(e)]]?.id);
   }
   const columns = [
@@ -228,7 +227,6 @@ const Groupwisetable = (props) => {
       width: '10%',
       editable: true,
       render:( (data,i) => {
-        // console.log(data.split(" ")[0].charAt(0).toUpperCase()+ data[0].slice(1).join(""));
         const arr = data.split(" ");
         for (var i = 0; i < arr.length; i++) {
             arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);

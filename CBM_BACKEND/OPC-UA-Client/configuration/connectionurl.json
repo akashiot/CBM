@@ -1,5 +1,5 @@
 {
-    "endpointurl":"opc.tcp://192.168.1.170:4840",
+    "endpointurl":"opc.tcp://172.22.59.68:4840",
     "username":"TVS",
     "password":"Tvs@123"
 }

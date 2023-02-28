@@ -1,12 +1,10 @@
-import { parse } from '@fortawesome/fontawesome-svg-core';
 import { Form, Input, InputNumber, message, Popconfirm, Table, Typography } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/url.json';
+import url from '../../configuration/url.json';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
-import { useContext } from "react";
-import { UserContext } from "../context";
+
 
 const EditableCell = ({
   editing,
@@ -43,36 +41,8 @@ const EditableCell = ({
   );
 };
 const Settingtable = (props) => {
-
-  // if(onehourData){
-  //   Object.keys(onehourData?.[props?.name]).forEach((el,i)=>{
-  //       console.log(onehourData?.[props?.name]?.[el]?.lsl.pop());
-  //       originData.push({
-  //         key: i.toString(),
-  //         name:el.charAt(0).toUpperCase() + el.slice(1),
-  //         lsl: onehourData?.[props?.name]?.[el]?.lsl.pop() || 0,
-  //         hsl: onehourData?.[props?.name]?.[el]?.hsl.pop() || 0,
-  //       })
-  //     })
-  // }
- 
-  // Object.keys(props?.data).forEach((sensor,i)=>{
-  //   originData.push({
-  //     key: i.toString(),
-  //     // id:props?.data?.[sensor]?.id.toString()|| 0,
-  //     id:(i+1).toString()|| 0,
-  //     name:props?.data?.[sensor]?.sensorname.charAt(0).toUpperCase() + sensor.slice(1) || "name",
-  //     type:props?.data?.[sensor]?.sensor_type,
-  //     address:props?.data?.[sensor]?.sensoraddress || "address",
-  //     info:props?.data?.[sensor]?.description || "info",
-  //     make:props?.data?.[sensor]?.manufacture || "make",
-  //     lsl: props?.data?.[sensor]?.lsl || 0,
-  //     hsl: props?.data?.[sensor]?.hsl || 0,
-  //   });
-  // })
-
   async function updateGroupingSensor(id,sensor,address,unit,make,type,lsl,hsl,lslDelay,hslDelay,description){
-    // console.log(id,sensor,type,address,make,lsl,hsl,description);
+    // Update sensor when stationwise enabled
     const msg=message.loading("Updating sensor details...",0)
     try {
           const updateGroupingSensor=await axios.post(url?.baseurl2+"configuration/updateGroupingsensor",{
@@ -101,8 +71,8 @@ const Settingtable = (props) => {
       console.error(error)  
     }
   }
-
   async function deleteGroupingSensor(id){
+    // Delete selected sensor when station wise is enabled
     const msg=message.loading("Deleting sensor details...",0)
     try {
       const deleteGroupingSensor = await axios.post(url?.baseurl2+'configuration/deleteGroupingsensor',{
@@ -131,15 +101,13 @@ const Settingtable = (props) => {
   useEffect(()=>{
     const originData = [];
     let objkeys=[];
-
+// Assigning sensor data to table when stationwise is enabled
     if(props?.data){
-      // console.log("stationwise : ",props?.trigger);
       objkeys=Object.keys(props?.data);
       Object.keys(props?.data).forEach((sensor,i)=>{
         if(sensor.includes(props?.filter)){
           originData.push({
             key: i.toString(),
-            // id:props?.data?.[sensor]?.id.toString()|| 0,
             id:(i+1).toString()|| 0,
             name:props?.data?.[sensor]?.sensor_name || "name",
             type:props?.data?.[sensor]?.sensor_type,
@@ -198,10 +166,7 @@ const Settingtable = (props) => {
           ...row,
         });
         setData(newData);
-        // console.log(props?.data?.[keys[parseInt(key)]]?.id);
-        // console.log(row?.lslDelay,row?.hslDelay,);
         updateGroupingSensor(props?.data?.[keys[parseInt(key)]]?.id,row?.name,row?.address,row?.unit,row?.make,row?.type,row?.lsl,row?.hsl,row?.lslDelay,row?.hslDelay,row?.info);
-        // updateGroupingSensor(data[key]?.id,row?.name,row?.address,row?.make,row?.type,row?.lsl,row?.hsl,row?.info);
         setEditingKey('');
       } else {
         newData.push(row);
@@ -221,7 +186,7 @@ const Settingtable = (props) => {
     {
       title: 'Id',
       dataIndex: 'id',
-      width: '5%',
+      width: '10%',
       editable: true,
     },{
       title: 'Sensor Name',
@@ -281,33 +246,33 @@ const Settingtable = (props) => {
       })
     },
     {
-      title: 'LSL',
+      title: 'LSL(sec)',
       dataIndex: 'lsl',
-      width: '10%',
+      width: '15%',
       editable: true,
     },
     {
-      title: 'LSL Delay',
+      title: 'LSL Delay(sec)',
       dataIndex: 'lslDelay',
-      width: '10%',
+      width: '20%',
       editable: true,
     },
     {
-      title: 'HSL',
+      title: 'HSL(sec)',
       dataIndex: 'hsl',
-      width: '10%',
+      width: '15%',
       editable: true,
     },
     {
-      title: 'HSL Delay',
+      title: 'HSL Delay(sec)',
       dataIndex: 'hslDelay',
-      width: '10%',
+      width: '20%',
       editable: true,
     },
     {
       title: 'Description',
       dataIndex: 'info',
-      width: '25%',
+      width: '30%',
       editable: true,
       ellipsis: {
         showTitle: false,
@@ -351,7 +316,7 @@ const Settingtable = (props) => {
     {
       title: 'Remove',
       dataIndex: 'remove',
-      width:'10%',
+      width:'15%',
       render: (_ ,record) => {
         return <Popconfirm title="Are you sure to delete this sensor?" onConfirm={()=>{remove(record.key)}} okText="Yes" cancelText="No">
                     <FontAwesomeIcon icon={faTrash} className="text-danger"/>

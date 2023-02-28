@@ -1,32 +1,27 @@
 var nodes7 = require('nodes7');
 var cors=require('cors')
 const express= require('express')
-const  fs=require('fs');
-const sequelize = require('../configuration/database.js')
 const app=express()
 app.use(cors());
 const port=3001;
 
-let plcConnected = false;
-var readVar;
 var datafromPlc = {}
-var jsonData={}
 app.get("/getPlcData", async (req, res) => {
+    // Pass the actual PLC data based on the PLC configuration
     return res.json(datafromPlc)
 })
 
 app.listen(`${port}`,()=>{
+    // plc services execution started on the configured port.
     console.log(`listening port on ${port}`);
 })
 
 var conn = {}
 var timeRef = {}
-
 exports.plcReadData = async function (plcInfo){
-    
+    // Get response from PLC tags
         conn[plcInfo.name] = new nodes7;
         if(!datafromPlc[plcInfo.name]) datafromPlc[plcInfo.name] = {}
-        // if(!timeRef[plcInfo.name]) timeRef[plcInfo.name] = {}
         await initPLC()
         async function clearPLC() {
             try {
@@ -36,28 +31,23 @@ exports.plcReadData = async function (plcInfo){
                 }
             } catch (err) { console.log('Error While Clearing PLC Connection') }
         }
-
+        // Retrying connection if device connection is lost
         async function initPLC () {
             try { await clearInterval(timeRef[plcInfo.name]) } catch { }
             try {
-                // await conn[plcInfo.name].dropConnection(() => {
                     try { connectPLC() } catch { console.log('Error While Initating PLC Connection') }
-                // })
             } catch (err) { console.log(err, 'Error while disconnecting') }
         
         }
         async function reInitPLC() {
             try { await clearInterval(timeRef[plcInfo.name]) } catch { }
             try {
-                // await conn[plcInfo.name].dropConnection(() => {
                     try { connectPLC() } catch { console.log('Error While Initating PLC Connection') }
-                // })
             } catch (err) { console.log(err, 'Error while disconnecting') }
         
         }
-
         async function connectPLC() {
-            // console.log(plcInfo.name);
+            // Initiate PLC connection
             try {
                 const a = conn[plcInfo.name].initiateConnection({
                     host:plcInfo.IP,
@@ -69,8 +59,8 @@ exports.plcReadData = async function (plcInfo){
                 console.log(err, 'While Connecting to PLC')
             }
         }       
-
         async function connected(err) {
+            // Checking condition PLC is connected or not
             if(!datafromPlc[plcInfo.name]) datafromPlc[plcInfo.name] = {}
             if (typeof (err) !== 'undefined') {
                 datafromPlc[plcInfo.name]['connection'] = false
@@ -82,8 +72,8 @@ exports.plcReadData = async function (plcInfo){
                 plcConnected = true
             }
         }
-
         async function startReading() {
+            //Reading data from plc based on the PLC configuration     
             const dataTags = Object.keys(plcInfo.Tags)
             await conn[plcInfo.name].setTranslationCB(function (tag) { return plcInfo.Tags[tag]; });
             await conn[plcInfo.name].removeItems()
@@ -99,17 +89,15 @@ exports.plcReadData = async function (plcInfo){
                     datafromPlc[plcInfo.name]['connection'] = false
                      console.log("SOMETHING WENT WRONG READING VALUES!!!!"); 
                     } else {
-                        // console.log(values)
                         datafromPlc[plcInfo.name]['connection'] = true
                     }
                     if(!datafromPlc[plcInfo.name]) datafromPlc[plcInfo.name]= {}
                     Object.keys(values).forEach((key) => {
                         const station = key.split('_')[0]
-//  console.log(station)
                         if(!datafromPlc[plcInfo.name][station]) datafromPlc[plcInfo.name][station]={}
-                        datafromPlc[plcInfo.name][station][key.split("_").slice(2).join("_")] = values[key]
+                        datafromPlc[plcInfo.name][station][key.split("_").slice(1).join("_")] = values[key]
                     });
                 }
-            catch (err) { console.log(err) }
+            catch (err) { console.error(err) }
         }
     }
