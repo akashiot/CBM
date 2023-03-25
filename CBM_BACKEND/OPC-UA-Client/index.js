@@ -6,4 +6,5 @@ const stn_settings = require('./configuration/opcuaConfig-teal.json')
         // Calling OPCUA service in index page
         const plcInfo = plcconfig[i]
         plc.plcReadData(plcInfo);
+        //console.log(plcInfo.Tags);
     }); 

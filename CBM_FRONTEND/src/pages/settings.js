@@ -85,6 +85,7 @@ export default function Settings() {
   const [name, setName] = useState("");
   const getName = (e) => {
     setName(e?.target.value);
+    console.log(name);
   };
 
   const [address, setAddress] = useState("");
@@ -212,37 +213,43 @@ export default function Settings() {
   }
 
   async function getStation() {
+     const stationLists = await axios.get(url?.baseurl2 + "alert/stationLists")
+     if (stationLists?.data?.status === true) {
+      setStationList(stationLists?.data?.data);
+    } else if (stationLists?.data?.status !== true) {
+      console.log("Please check connection!");
+    }
     // method for get stations
-    const data = {
-      Flag: "SubSystem",
-      CompanyCode: "TEAL_SVT",
-      PlantCode: "TEAL_SVT01",
-      LineCode: "Proj_Bat",
-    };
-    fetch(
-      "http://192.168.20.104:9000/historicapi/api/Toollife/GetSettingDatas",
-      {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-          // 'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwibmJmIjoxNjcxMTAzMTgyLCJleHAiOjE2NzExMDQ5ODIsImlhdCI6MTY3MTEwMzE4Mn0.pHD9rfmJvu70VBS7ShlN2lWYIYjN3rQzFBN_8xItdrU:admin'
-          Authorization:
-            "Bearer " +
-            localStorage.getItem("token") +
-            ":" +
-            localStorage.getItem("username"),
-        },
-        body: JSON.stringify(data),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setStationList(data?.data);
-        setTokenExperied(false);
-      })
-      .catch((error) => {
-        setTokenExperied(true);
-      });
+    // const data = {
+    //   Flag: "SubSystem",
+    //   CompanyCode: "TEAL_SVT",
+    //   PlantCode: "TEAL_SVT01",
+    //   LineCode: "Proj_Bat",
+    // };
+    // fetch(
+    //   "http://192.168.20.104:9000/historicapi/api/Toollife/GetSettingDatas",
+    //   {
+    //     method: "POST", // or 'PUT'
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       // 'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwibmJmIjoxNjcxMTAzMTgyLCJleHAiOjE2NzExMDQ5ODIsImlhdCI6MTY3MTEwMzE4Mn0.pHD9rfmJvu70VBS7ShlN2lWYIYjN3rQzFBN_8xItdrU:admin'
+    //       Authorization:
+    //         "Bearer " +
+    //         localStorage.getItem("token") +
+    //         ":" +
+    //         localStorage.getItem("username"),
+    //     },
+    //     body: JSON.stringify(data),
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setStationList(data?.data);
+    //     setTokenExperied(false);
+    //   })
+    //   .catch((error) => {
+    //     setTokenExperied(true);
+    //   });
   }
 
   const [newStation, setNewStation] = useState("");
@@ -449,11 +456,7 @@ export default function Settings() {
       <MDBRow>
         <MDBCol lg="12" className=" px-3 py-3">
           <MDBCard className="border shadow rounded-6 ">
-            <div
-              className="shadow px-3 py-2 bg-info"
-              id="header"
-              style={{ borderRadius: " 12px 12px 0 0" }}
-            >
+            <div className="shadow px-3 py-2 bg-info" id="header" style={{ borderRadius: " 12px 12px 0 0" }}>
               <MDBTypography tag={"h6"} className="fw-bold text-light pt-2">
                 <FontAwesomeIcon icon={faSliders} className="px-2 fs-5" />
                 <span>Sensor Limit Configuration</span>
@@ -461,11 +464,7 @@ export default function Settings() {
             </div>
             <MDBRow>
               <MDBCol lg="6" className="mt-4 px-4">
-                <MDBRadio
-                  name="inlineRadio"
-                  id="inlineRadio1"
-                  value="option1"
-                  label="StationWise"
+                <MDBRadio name="inlineRadio" id="inlineRadio1" value="option1" label="StationWise"
                   onClick={() => {
                     getGroupSensor();
                     setRadioSelected(true);
@@ -473,11 +472,7 @@ export default function Settings() {
                   inline
                   defaultChecked={radioSelected ? true : false}
                 />
-                <MDBRadio
-                  name="inlineRadio"
-                  id="inlineRadio2"
-                  value="option2"
-                  label="Groupwise"
+                <MDBRadio name="inlineRadio" id="inlineRadio2" value="option2" label="Groupwise"
                   onClick={() => {
                     GroupwiseGroupSensor();
                     setFilter("");
@@ -487,14 +482,8 @@ export default function Settings() {
                   defaultChecked={radioSelected ? false : true}
                 />
               </MDBCol>
-              <MDBCol
-                lg="6"
-                className="d-flex justify-content-end  pb-2 mt-4 px-5"
-              >
-                <MDBBtn
-                  color="info"
-                  rounded
-                  className="fw-bold"
+              <MDBCol lg="6" className="d-flex justify-content-end  pb-2 mt-4 px-5">
+                <MDBBtn color="info" rounded className="fw-bold"
                   onClick={() => {
                     getStation();
                     getSensors();
@@ -640,35 +629,13 @@ export default function Settings() {
                               Select
                             </option>
                             {/* Get Station list from API */}
-                            {/* {
-                                                                    stationlist.map((e,i)=>{
-                                                                        return <option key={i} value={e?.Name} className="text-capitalize">{e?.Name}</option>
-                                                                    })
-                                                                } */}
-                            {[
-                              {
-                                Name: "OP_10"
-                              },
-                              {
-                                Name: "OP_20"
-                              },
-                              {
-                                Name: "OP_30"
-                              },
-                              {
-                                Name: "OP_40"
-                              },
-                            ].map((e, i) => {
-                              return (
-                                <option
-                                  key={i}
-                                  value={e?.Name}
-                                  className="text-capitalize"
-                                >
-                                  {e?.Name}
-                                </option>
-                              );
-                            })}
+                            {
+                              
+                              stationlist.map((e,i)=>{
+                                console.log(e)
+                                  return (<option key={i} value={e?.stationname} className="text-capitalize">{e?.stationname}</option>);
+                              })
+                            }
                           </select>
                         </div>
                       </MDBCol>
@@ -762,7 +729,7 @@ export default function Settings() {
                           placeholder="Enter unit of sensor"
                           value={newUnit}
                           onChange={getNewUnit}
-                          disabled={fieldEnable}
+                          //disabled={fieldEnable}
                         ></input>
                       </MDBCol>
                       <MDBCol lg={"12"} className="px-0 py-1 mb-1">
@@ -779,7 +746,7 @@ export default function Settings() {
                                 placeholder="Enter sensor LSL"
                                 value={newlsl}
                                 onChange={getNewLsl}
-                                disabled={fieldEnable}
+                                //disabled={fieldEnable}
                               ></input>
                             </MDBCol>
                             <MDBCol lg={"6"} className="px-5 mb-3">
@@ -793,7 +760,7 @@ export default function Settings() {
                                 placeholder="Enter sensor HSL"
                                 value={newhsl}
                                 onChange={getNewHsl}
-                                disabled={fieldEnable}
+                                //disabled={fieldEnable}
                               ></input>
                             </MDBCol>
                             <MDBCol lg={"6"} className="px-5 mb-3">

@@ -18,7 +18,8 @@ exports.actualvalue = async function (stn, data) {
             var sensorname = Object.keys(key);
             var actualdata = Object.values(key);
             if (sensorname[0].toLowerCase() == ele.sensor_name.toLowerCase() && stn.toLowerCase() == ele.station_name.toLowerCase()) {
-              var sens = +JSON.parse(actualdata);
+              // console.log("actualdata",actualdata[0] === "null"? 0:actualdata);
+              var sens = +JSON.parse(actualdata || 0);
               db.query(
                 `Insert into actual_data(time_stamp, type,groupsensor_name,station,sensor, lsl, actual_data, hsl,unit) values('${timestamp}','${
                   ele.type
@@ -44,7 +45,7 @@ exports.actualvalue = async function (stn, data) {
             //       if (err) console.log(err);
             //     }
             //   );
-            // }
+            }
           });
         });
       }

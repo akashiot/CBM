@@ -5,6 +5,7 @@ exports.reports =async function(req,res){
         // Format the report data list on the stationwise
         try {
         var sta={}
+        console.log(`select * from actual_data WHERE  time_stamp BETWEEN '${req.body.fromdate}' AND '${req.body.todate}' order by id LIMIT ${req.body.startLimit},${req.body.endLimit}`);
         await db.query(`select * from actual_data WHERE  time_stamp BETWEEN '${req.body.fromdate}' AND '${req.body.todate}' order by id LIMIT ${req.body.startLimit},${req.body.endLimit}`,function(err,select){
         for (const ele of select) {
             if(sta[ele?.station]){

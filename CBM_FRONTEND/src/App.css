@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+th.ant-table-cell {
+  width: auto;
+}
+.ant-table-container::-webkit-scrollbar {width: 1px;}
+
+.ant-table-container{
+overflow-x: scroll;
+}
+
+table {
+  table-layout: unset !important;
+}
+
+ul#nav {
+  flex-direction: row
+}

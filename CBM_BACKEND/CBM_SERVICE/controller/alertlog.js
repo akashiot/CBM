@@ -52,7 +52,7 @@ function CsvFileGenerate() {
         const ws = fs.createWriteStream("../Alarm.csv");
         fastcsv
           .write(jsonData)
-          .on("finish", function () {})
+          .on("finish", function () { })
           .pipe(ws);
       }
     );
@@ -86,12 +86,11 @@ async function overallEmailGeneration() {
               async function (err, res) {
                 layout += `<tr>
                                 <td style="padding: 5px;border: 1px solid;">${e?.station.replace(
-                                  /(^\w{1})|(\s+\w{1})/g,
-                                  (letter) => letter.toUpperCase()
-                                )}</td>
-                                <td style="padding: 5px;border: 1px solid;">${
-                                  res[0]?.["COUNT(sensor)"]
-                                }</td>
+                  /(^\w{1})|(\s+\w{1})/g,
+                  (letter) => letter.toUpperCase()
+                )}</td>
+                                <td style="padding: 5px;border: 1px solid;">${res[0]?.["COUNT(sensor)"]
+                  }</td>
                             </tr>`;
                 if (i === arr.length - 1) {
                   let table = `
@@ -154,20 +153,13 @@ exports.alertLog = async function (ele, data) {
       function (err, result) {
         result.forEach((element, i) => {
           if (data?.[element?.sensor_name] !== undefined) {
-            let alert_id =
-              "A_" +
-              element?.station_name +
-              "_" +
-              element?.sensor_name +
-              "_" +
-              timeStamp;
-            if (
-              parseFloat(data?.[element?.sensor_name].toFixed(2)) < element?.lsl
-            ) {
+            let alert_id = "A_" + element?.station_name + "_" + element?.sensor_name + "_" + timeStamp;
+            if (parseFloat(Number(data?.[element?.sensor_name]).toFixed(2)) < element?.lsl) {
               // This case executes when the actual values less than the lower limit
               db.query(
                 `select * from alert_log where station='${element?.station_name}' AND sensor='${element?.sensor_name}'AND fault_type='Instant' AND status='Active'`,
                 function (err, alertData) {
+                  //if(alertData){
                   if (alertData.length === 0) {
                     if (
                       store.get("lsl_delay") === null ||
@@ -178,53 +170,38 @@ exports.alertLog = async function (ele, data) {
                       // Logs the alarm after the delay
                       if (store.get("lsl_delay") === null) {
                       } else {
-                        db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values(
-                                                '${alert_id}','${
-                          element?.station_name
-                        }','${element.sensor_name}','${
-                          element?.sensor_type
-                        }','Low limit','Instant','${
-                          element?.lsl
-                        }','${parseFloat(
-                          data?.[element?.sensor_name].toFixed(2)
-                        )}','${
-                          element?.hsl
-                        }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                        console.log(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values('${alert_id}','${element?.station_name}','${element.sensor_name}','${element?.sensor_type}','Low limit','Instant','${element?.lsl}','${parseFloat(Number(data?.[element?.sensor_name]).toFixed(2))}','${element?.hsl}','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                        db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values('${alert_id}','${element?.station_name}','${element.sensor_name}','${element?.sensor_type}','Low limit','Instant','${element?.lsl}','${parseFloat(Number(data?.[element?.sensor_name]).toFixed(2))}','${element?.hsl}','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
                         let content = `<div style="padding:10px;border:1px solid black;text-align:center">
-                                                            <h3 style="margin-bottom:10px">Station Name : ${element?.station_name.replace(
-                                                              /(^\w{1})|(\s+\w{1})/g,
-                                                              (letter) =>
-                                                                letter.toUpperCase()
-                                                            )}</h3>
-                                                            <h3 style="margin-bottom:10px">Sensor Name : ${element?.sensor_name.replace(
-                                                              /(^\w{1})|(\s+\w{1})/g,
-                                                              (letter) =>
-                                                                letter.toUpperCase()
-                                                            )}</h3>
-                                                            <h3 style="margin-bottom:10px">Alarm Type : Value crossed Low Limit</h3>
-                                                            <h3 style="margin-bottom:10px">Low Limit Value : ${
-                                                              element?.lsl
-                                                            }</h3>
-                                                            <h3 style="margin-bottom:10px">Actual Value : ${parseFloat(
-                                                              data?.[
-                                                                element
-                                                                  ?.sensor_name
-                                                              ].toFixed(2)
-                                                            )}</h3>
-                                                            <h3 style="margin-bottom:10px">High Limit Value : ${
-                                                              element?.hsl
-                                                            }</h3>
-                                                            <h3 style="margin-bottom:10px">Triggered Time : ${moment(
-                                                              timeStamp
-                                                            )
-                                                              .add(
-                                                                element?.lsl_delay,
-                                                                "seconds"
-                                                              )
-                                                              .format(
-                                                                "YYYY-MM-DD HH:mm:ss.SSS"
-                                                              )}</h3>
-                                                        </div>`;
+                                                              <h3 style="margin-bottom:10px">Station Name : ${element?.station_name.replace(
+                          /(^\w{1})|(\s+\w{1})/g,
+                          (letter) =>
+                            letter.toUpperCase()
+                        )}</h3>
+                                                              <h3 style="margin-bottom:10px">Sensor Name : ${element?.sensor_name.replace(
+                          /(^\w{1})|(\s+\w{1})/g,
+                          (letter) =>
+                            letter.toUpperCase()
+                        )}</h3>
+                                                              <h3 style="margin-bottom:10px">Alarm Type : Value crossed Low Limit</h3>
+                                                              <h3 style="margin-bottom:10px">Low Limit Value : ${element?.lsl
+                          }</h3>
+                                                              <h3 style="margin-bottom:10px">Actual Value : ${parseFloat(
+                            Number(data?.[element?.sensor_name]).toFixed(2)
+                          )}</h3>
+                                                              <h3 style="margin-bottom:10px">High Limit Value : ${element?.hsl
+                          }</h3>
+                                                              <h3 style="margin-bottom:10px">Triggered Time : ${moment(
+                            timeStamp
+                          )
+                            .add(
+                              element?.lsl_delay,
+                              "seconds"
+                            )
+                            .format(
+                              "YYYY-MM-DD HH:mm:ss.SSS"
+                            )}</h3>
+                                                          </div>`;
                         // emailGeneration(content).catch(console.error);
                       }
                       store.set("lsl_delay", timeStamp);
@@ -243,17 +220,13 @@ exports.alertLog = async function (ele, data) {
                         function (err, activeCheck) {
                           if (activeCheck.length === 0) {
                             db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values(
-                                                '${alert_id}','${
-                              element?.station_name
-                            }','${element.sensor_name}','${
-                              element?.sensor_type
-                            }','Low limit','One minute','${
-                              element?.lsl
-                            }','${parseFloat(
-                              data?.[element?.sensor_name].toFixed(2)
-                            )}','${
-                              element?.hsl
-                            }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                                                  '${alert_id}','${element?.station_name
+                              }','${element.sensor_name}','${element?.sensor_type
+                              }','Low limit','One minute','${element?.lsl
+                              }','${parseFloat(
+                                Number(data?.[element?.sensor_name]).toFixed(2)
+                              )}','${element?.hsl
+                              }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
                           }
                         }
                       );
@@ -261,7 +234,7 @@ exports.alertLog = async function (ele, data) {
                       moment(alertData[0]?.start_time)
                         .add(10, "minutes")
                         .format("YYYY-MM-DD HH:mm:ss.SSS") <=
-                        timeStamp ===
+                      timeStamp ===
                       true
                     ) {
                       db.query(
@@ -269,17 +242,13 @@ exports.alertLog = async function (ele, data) {
                         function (err, alertMinData) {
                           if (alertMinData.length === 0) {
                             db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values(
-                                                '${alert_id}','${
-                              element?.station_name
-                            }','${element.sensor_name}','${
-                              element?.sensor_type
-                            }','Low limit','Ten Minute','${
-                              element?.lsl
-                            }','${parseFloat(
-                              data?.[element?.sensor_name].toFixed(2)
-                            )}','${
-                              element?.hsl
-                            }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                                                  '${alert_id}','${element?.station_name
+                              }','${element.sensor_name}','${element?.sensor_type
+                              }','Low limit','Ten Minute','${element?.lsl
+                              }','${parseFloat(
+                                Number(data?.[element?.sensor_name]).toFixed(2)
+                              )}','${element?.hsl
+                              }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
                           }
                         }
                       );
@@ -297,12 +266,14 @@ exports.alertLog = async function (ele, data) {
                     //   }' AND alert_type='Low limit' `
                     // );
                   }
+                  //}
+
                 }
               );
             } else if (
-              parseFloat(data?.[element?.sensor_name].toFixed(2)) >
-                element?.lsl &&
-              parseFloat(data?.[element?.sensor_name].toFixed(2)) < element?.hsl
+              parseFloat(Number(data?.[element?.sensor_name]).toFixed(2)) >
+              element?.lsl &&
+              parseFloat(Number(data?.[element?.sensor_name]).toFixed(2)) < element?.hsl
             ) {
               // ALert return into normal range
               db.query(
@@ -324,10 +295,9 @@ exports.alertLog = async function (ele, data) {
                         .add(element?.lsl_delay, "seconds")
                         .format(
                           "YYYY-MM-DD HH:mm:ss.SSS"
-                        )}',duration='${duration}' where status='Active' AND station='${
-                        element?.station_name
+                        )}',duration='${duration}' where status='Active' AND station='${element?.station_name
                       }' AND sensor='${element?.sensor_name}'`,
-                      function (err, res) {}
+                      function (err, res) { }
                     );
                   }
                 }
@@ -352,16 +322,15 @@ exports.alertLog = async function (ele, data) {
                         .add(element?.hsl_delay, "seconds")
                         .format(
                           "YYYY-MM-DD HH:mm:ss.SSS"
-                        )}',duration='${duration}' where status='Active' AND station='${
-                        element?.station_name
+                        )}',duration='${duration}' where status='Active' AND station='${element?.station_name
                       }' AND sensor='${element?.sensor_name}'`,
-                      function (err, res) {}
+                      function (err, res) { }
                     );
                   }
                 }
               );
             } else if (
-              parseFloat(data?.[element?.sensor_name].toFixed(2)) > element?.hsl
+              parseFloat(Number(data?.[element?.sensor_name]).toFixed(2)) > element?.hsl
             ) {
               // This case executes when the actual values less than the higher limit
               db.query(
@@ -378,49 +347,43 @@ exports.alertLog = async function (ele, data) {
                       if (store.get("hsl_delay") === null) {
                       } else {
                         db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values(
-                                            '${alert_id}','${
-                          element?.station_name
-                        }','${element.sensor_name}','${
-                          element?.sensor_type
-                        }','High limit','Instant','${
-                          element?.lsl
-                        }','${parseFloat(
-                          data?.[element?.sensor_name].toFixed(2)
-                        )}','${
-                          element?.hsl
-                        }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                                              '${alert_id}','${element?.station_name
+                          }','${element.sensor_name}','${element?.sensor_type
+                          }','High limit','Instant','${element?.lsl
+                          }','${parseFloat(
+                            Number(data?.[element?.sensor_name]).toFixed(2)
+                          )}','${element?.hsl
+                          }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
                         let content = `<div style="padding:10px;border:1px solid black;text-align:center">
-                                            <h3 style="margin-bottom:10px">Station Name : ${element?.station_name.replace(
-                                              /(^\w{1})|(\s+\w{1})/g,
-                                              (letter) => letter.toUpperCase()
-                                            )}</h3>
-                                            <h3 style="margin-bottom:10px">Sensor Name : ${element?.sensor_name.replace(
-                                              /(^\w{1})|(\s+\w{1})/g,
-                                              (letter) => letter.toUpperCase()
-                                            )}</h3>
-                                            <h3 style="margin-bottom:10px">Alarm Type : Value crossed High Limit</h3>
-                                            <h3 style="margin-bottom:10px">Low Limit Value : ${
-                                              element?.lsl
-                                            }</h3>
-                                            <h3 style="margin-bottom:10px">Actual Value : ${parseFloat(
-                                              data?.[
-                                                element?.sensor_name
-                                              ].toFixed(2)
-                                            )}</h3>
-                                            <h3 style="margin-bottom:10px">High Limit Value : ${
-                                              element?.hsl
-                                            }</h3>
-                                            <h3 style="margin-bottom:10px">Triggered Time : ${moment(
-                                              timeStamp
-                                            )
-                                              .add(
-                                                element?.lsl_delay,
-                                                "seconds"
-                                              )
-                                              .format(
-                                                "YYYY-MM-DD HH:mm:ss.SSS"
-                                              )}</h3>
-                                        </div>`;
+                                              <h3 style="margin-bottom:10px">Station Name : ${element?.station_name.replace(
+                          /(^\w{1})|(\s+\w{1})/g,
+                          (letter) => letter.toUpperCase()
+                        )}</h3>
+                                              <h3 style="margin-bottom:10px">Sensor Name : ${element?.sensor_name.replace(
+                          /(^\w{1})|(\s+\w{1})/g,
+                          (letter) => letter.toUpperCase()
+                        )}</h3>
+                                              <h3 style="margin-bottom:10px">Alarm Type : Value crossed High Limit</h3>
+                                              <h3 style="margin-bottom:10px">Low Limit Value : ${element?.lsl
+                          }</h3>
+                                              <h3 style="margin-bottom:10px">Actual Value : ${parseFloat(
+                            data?.[
+                              element?.sensor_name
+                            ].toFixed(2)
+                          )}</h3>
+                                              <h3 style="margin-bottom:10px">High Limit Value : ${element?.hsl
+                          }</h3>
+                                              <h3 style="margin-bottom:10px">Triggered Time : ${moment(
+                            timeStamp
+                          )
+                            .add(
+                              element?.lsl_delay,
+                              "seconds"
+                            )
+                            .format(
+                              "YYYY-MM-DD HH:mm:ss.SSS"
+                            )}</h3>
+                                          </div>`;
                         // emailGeneration(content).catch(console.error);
                       }
                       store.set("hsl_delay", timeStamp);
@@ -439,17 +402,13 @@ exports.alertLog = async function (ele, data) {
                         function (err, activeCheck) {
                           if (activeCheck.length === 0) {
                             db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values(
-                                                '${alert_id}','${
-                              element?.station_name
-                            }','${element.sensor_name}','${
-                              element?.sensor_type
-                            }','High limit','One minute','${
-                              element?.lsl
-                            }','${parseFloat(
-                              data?.[element?.sensor_name].toFixed(2)
-                            )}','${
-                              element?.hsl
-                            }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                                                  '${alert_id}','${element?.station_name
+                              }','${element.sensor_name}','${element?.sensor_type
+                              }','High limit','One minute','${element?.lsl
+                              }','${parseFloat(
+                                Number(data?.[element?.sensor_name]).toFixed(2)
+                              )}','${element?.hsl
+                              }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
                           }
                         }
                       );
@@ -457,7 +416,7 @@ exports.alertLog = async function (ele, data) {
                       moment(alertData[0]?.start_time)
                         .add(10, "minutes")
                         .format("YYYY-MM-DD HH:mm:ss.SSS") <=
-                        timeStamp ===
+                      timeStamp ===
                       true
                     ) {
                       db.query(
@@ -465,17 +424,13 @@ exports.alertLog = async function (ele, data) {
                         function (err, alertMinData) {
                           if (alertMinData.length === 0) {
                             db.query(`insert into alert_log(alert_no,station,sensor,sensor_type,alert_type,fault_type,lsl,alert_value,hsl,start_time,end_time,duration,status,timelapse,date,remarks,acknowledge)values(
-                                                '${alert_id}','${
-                              element?.station_name
-                            }','${element.sensor_name}','${
-                              element?.sensor_type
-                            }','High limit','Ten Minute','${
-                              element?.lsl
-                            }','${parseFloat(
-                              data?.[element?.sensor_name].toFixed(2)
-                            )}','${
-                              element?.hsl
-                            }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
+                                                  '${alert_id}','${element?.station_name
+                              }','${element.sensor_name}','${element?.sensor_type
+                              }','High limit','Ten Minute','${element?.lsl
+                              }','${parseFloat(
+                                Number(data?.[element?.sensor_name]).toFixed(2)
+                              )}','${element?.hsl
+                              }','${timeStamp}',' ',' ','Active',0,'${date}',' ',' ')`);
                           }
                         }
                       );
@@ -512,6 +467,7 @@ exports.alertAPI = async function (req, res) {
   // Format the alarms based on the selected sensor in the UI
   try {
     var sta = [];
+    console.log("alertAPI",`select * from alert_log WHERE start_time BETWEEN '${req?.body?.fromDate}' AND '${req?.body?.toDate}' order by alert_id  desc`);
     const select = await sequelize.query(
       `select * from alert_log WHERE start_time BETWEEN '${req?.body?.fromDate}' AND '${req?.body?.toDate}' order by alert_id  desc`
     );
@@ -564,3 +520,14 @@ exports.acknowledgeAPI = async function (req, res) {
     console.error(error);
   }
 };
+exports.sensorList = async function (req, res) {
+  try {
+    const results = await sequelize.query(`select stationname,ip,description from station_details`);
+    if (results.length >= 0) {
+      res.json({ status: true, result: " Getting all Station details Successfully!", data: results[0] })
+    }
+    console.log(results);
+  } catch (error) {
+    console.log(error);
+  }
+}

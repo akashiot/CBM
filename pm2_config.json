@@ -2,28 +2,26 @@
     "apps":[
         {
             "name": "opcuaclient",
-            "cwd":"/CBM/CBM BPAL/CBM_BACKEND/OPC-UA-Client",
+            "cwd":"/CBM/Gateway/CBM_BACKEND/OPC-UA-Client",
             "script": "index.js",
             "watch":true,
-            "ignore_watch": ["node_modules"]
+            "ignore_watch": ["node_modules"],
+            "out_file": "/dev/null",
+            "error_file": "/dev/null",
+            "cron_restart": "0 0 * * *"
 
         },
         {
             "name": "cbmservice",
-            "cwd":"/CBM/CBM BPAL/CBM_BACKEND/CBM_Service",
+            "cwd":"/CBM/Gateway/CBM_BACKEND/CBM_Service",
             "script": "index.js",
             "watch":true,
             "ignore_watch": ["node_modules"],
-            "restart_delay": 10000
+            "restart_delay": 10000,
+            "out_file": "/dev/null",
+            "error_file": "/dev/null",
+            "cron_restart": "0 0 * * *"
 
-        },
-        {
-            "name":"Pythonsim1",
-            "cwd":"D:/CBM/Kantara",
-            "script":"python_cbm_Simulation_server1.py",
-            "watch":true,
-            "ignore_watch":["venv"]
         }
-
     ]
 }
