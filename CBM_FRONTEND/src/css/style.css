@@ -97,3 +97,8 @@
 }
 
 
+/* Custom changes */
+
+.form-check-input[type=radio]:after{
+  z-index: 0 !important;
+}

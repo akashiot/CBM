@@ -4,14 +4,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import Logo from '../assets/Teal_logo.png';
-import { MDBContainer, MDBRow, MDBCol,MDBCard, MDBBtn,MDBTypography, MDBInputGroup  } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBRow, MDBCol,MDBCard, MDBBtn, MDBInputGroup  } from 'mdb-react-ui-kit';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser,faKey,faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import URL from '../configuration/url.json';
-
-
-
 
 function Login() {
 
@@ -25,7 +22,7 @@ function Login() {
     const [passwordShown, setPasswordShown] = useState(false);
     const [passwordShownIcon, setPasswordShownIcon] = useState(false);
    
-
+    // Validate input fields
     const handleChange= (e) =>{
         const{ name, value}=e.target;
         setFormValues({...formValues, [name]: value});
@@ -43,25 +40,30 @@ function Login() {
     const validate =(values) =>{
         const errors={};
         const restrict=/^[a-z, A-Z]/;
-        if(!values.username || !restrict.test(values.username)){
+        if(!values.username){
             errors.username = "Username is required!";
+        } else if(!restrict.test(values.username)){
+            errors.username = "Username should contain only the letters";
         }
+        // if(!values.username || !restrict.test(values.username)){
+        //     errors.username = "Username is required!";
+        // }
         if(!values.password){
             errors.password = "Password is required!";
         }
         return errors;
     }
+    // show or hide password field
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
         setPasswordShownIcon(passwordShownIcon ? false : true);
       };
-    
     async function loginAuth(){
+        // used TEAL login API
         const url=URL?.login;
         const reqParameter={UserName:formValues.username,Password:formValues.password,LastLogin:""}
         axios.post(url,reqParameter)
             .then(res=>{
-                console.log(res);
                 if(res?.data?.loginstatus==="Login Successfull...!"){
                     localStorage.setItem("token",res?.data?.token);
                     localStorage.setItem("username",formValues.username);
@@ -74,10 +76,11 @@ function Login() {
             })
             .catch(err=>{
                 message.error(err?.message,1)
-                console.log(err)
+                console.error(err)
             })
     }
     function login() {
+        // For testing only(used dummy credentials to access the dashboard and other UI).This logic needs to be remove when it is in production.
         let user=formValues.username.replace(/[^a-z]/gi,'').toLowerCase();
         if(user==="admin" && formValues.password==="Admin@123"){
             localStorage.setItem("username",user)
@@ -93,8 +96,8 @@ function Login() {
     }
     
     return (
+        // UI components
     <MDBContainer fluid id='rowLogin'>
-
         <MDBRow className='vh-100 px-5 justify-content-center' id='rowLogin'>
         <div className='mask' >
             <div className='d-flex justify-content-center align-items-center vh-100'>
@@ -107,7 +110,6 @@ function Login() {
                             <p className='text-monospace text-muted fs-5'>Titan Engineering & Automation limited</p>
                             <h3 className='blink fw-bold te1xt-muted pt-2 text-info'>Condition Monitoring Solution</h3>
                         </div>
-                        
                                 <form className='px-5 py-3 text-center' onSubmit={handleSubmit}>
                                     <MDBInputGroup className='mt-5' noBorder textBefore={<FontAwesomeIcon icon={faUser} />}>
                                         <input className='form-control shadow-none border-0 border-bottom rounded-0' maxLength={35} id="username" name="username"type='text' placeholder='Username' value={formValues.username} onChange={handleChange} style={{backgroundColor:'rgb(224, 247, 250)'}} autoComplete='off'/>
@@ -130,15 +132,3 @@ function Login() {
 export default Login;
 
 
-// else if(localStorage.getItem('token')===null){
-                //     changepage('/')
-                // }
-                // if(res?.data?.status=="true"){
-                //     message.success('Logged In successfully!');
-                //     setTimeout(() => {
-                //        changepage('/dashboard');
-                //     }, 1000);
-                // }
-                // else if(res?.data?.status=="false" && user && formValues.password){
-                //     message.error(res?.data?.loginstatus)
-                // }

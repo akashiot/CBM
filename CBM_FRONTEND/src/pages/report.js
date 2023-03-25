@@ -1,4 +1,4 @@
-    import { Children, useEffect, useState } from "react";
+    import { useState } from "react";
     import { useNavigate } from "react-router-dom";
     import { MDBBtn, 
             MDBCard, 
@@ -12,38 +12,35 @@
             MDBAccordionItem, 
             MDBTable, 
             MDBTableBody, 
-            MDBTableHead,
           } from "mdb-react-ui-kit";
     import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-    import {faTable, faFileExport, faHouseCrack, faChartSimple, faCircle, faChartColumn, faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+    import {faTable, faHouseCrack, faChartSimple, faCircle, faChartColumn, faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
     import Navbar from "../components/navbar";
     import Reportsparkline from "../components/report/reportsparkline";
     import Reporttable from '../components/report/reporttable'
     import Groupreporttable from "../components/report/groupreporttable";
     import Reportmultilinechart from "../components/report/reportmultiline";
     import Chart from "../components/report/chart"
-    import url from "D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/url.json"
-    import source from "D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/chartseries.json"
-    import Paragraph from "antd/lib/skeleton/Paragraph";
     import axios from "axios";
     import { useContext } from "react";
     import { UserContext } from "../components/context"; 
     import { message } from "antd";
     import moment from "moment";
-
     import TextField from '@mui/material/TextField';
     import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
     import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
     import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+    import url from "../configuration/url.json";
+
 
     function Report(){
-
     const changepage = useNavigate();
     if(localStorage.getItem("username")===null){
+        // if user is not logged in route to login page
         changepage('/')
     }
 
-
+    // Calling context value from main component
         const {selectReportStation,setSelectReportStation,
                selectReportIndex,setSelectReportIndex,
                radioSelected,setRadioSelected,
@@ -51,7 +48,6 @@
                 endLimit,setEndLimit}=useContext(UserContext)
 
 
-        const [option,setOption]=useState([]);
         const [series,setSeries]=useState([]);
         const [lsl,setLsl]=useState([]);
         const [hsl,setHsl]=useState([]);
@@ -63,27 +59,16 @@
         const [overLap,setOverLap]=useState(false)
         const [invokeMulitiLine,setInvokeMultiLine]=useState(true)
         const [multiLineStation,setMultiLineStation]=useState('')
-
-
-
-
         const [tableData,setTableData]=useState({})
-        const [tableValue,setTableValue]=useState({});
         const [trigger,settrigger]=useState(false);
         const[fromdate,setFromdate]=useState(moment().format('YYYY-MM-DD')+" 00:00:00.000");
         const[todate,setTodate]=useState(moment().format('YYYY-MM-DD')+" 23:59:59.000");
-        const[machinename,setMachinename]=useState("");
-        const getMachineName= (e) =>{setMachinename(e.target.value)};
-        const[sensorname,setSensorname]=useState("");
-        const getSensorName= (e) =>{setSensorname(e.target.value);chartSeries(e.target.value)}
         const[radio,setRadio]=useState(true)
         const [filter,setFilter]=useState('')
-        // const [startLimit,setStartLimit]=useState(0)
-        // const [endLimit,setEndLimit]=useState(1000)
-      
         const [isLoaderEnable,setIsLoaderEnable]=useState(false)
 
         const result = (from,to) =>{
+            // Limit filter record between 2 days date range
             if(from>to){
                 message.error("Fromdate is greater than todate!")
             }
@@ -96,18 +81,17 @@
             }
         }
         const chartSeries = (station,param) =>{
+            // Assign data for chart
             setSeries(tableData?.[station]?.[param]?.yaxis);
             setTimestamp(tableData?.[station]?.[param]?.xaxis);
             setLsl(tableData?.[station]?.[param]?.lsl);
             setHsl(tableData?.[station]?.[param]?.hsl);
             settrigger((p)=>!p)
-            // setTableValue(source?.[station]?.[param]);
             setStation(station);
             setparam(param)
         }
-    //   console.log(startLimit,endLimit);
-   
         const getStationRecord = async(from,to,par)=>{
+            // Concept of showing only 1000 samples with next button to show further samples
             setIsLoaderEnable(true)
             let start=startLimit;
             let end=endLimit;
@@ -119,7 +103,7 @@
                 start=startLimit-1000;
                 end=endLimit-1000;
             }
-            console.log(start,end);
+            // Stationwise Report API Call
             try {
                 const report = await axios.post(url?.baseurl2+"reports/stationReport",{
                     fromdate:from,
@@ -153,6 +137,7 @@
                 start=startLimit-1000;
                 end=endLimit-1000;
             }
+            // Groupwise Report API Call
             try {
                 const report = await axios.post(url?.baseurl2+"reports/groupingReport",{
                     fromdate:from,
@@ -163,7 +148,6 @@
                 if(report?.data?.status===true){
                     setTableData(report?.data?.Result)
                     setIsLoaderEnable(false)
-                    // console.log(report?.data?.Result);
                 }
                 else if(report?.data?.status===false){
                     message.error(report?.data?.Result)
@@ -175,9 +159,10 @@
             }
         }
         const val=Object.keys(tableData);
-        // console.log(val)
         return(
+            // UI Components
             <MDBContainer fluid className="py-2" id="container">
+                {/* Calling Navigation bar */}
                 <Navbar/>
                              
                 <MDBRow className="pt-3">
@@ -189,7 +174,6 @@
                             <MDBRow className="mt-3 mb-2">
                                 <MDBCol size="lg" className="px-4 py-2">
                                     <label className="text-muted fw-bold">From Date</label>
-                                    {/* <input type="date" className="form-control" value={fromdate} onChange={getFromDate}></input> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DateTimePicker className="form-control"
                                         ampm={false}
@@ -207,7 +191,6 @@
                                 </MDBCol>
                                 <MDBCol size="lg" className="px-4 py-2">
                                     <label className="text-muted fw-bold">To Date</label>
-                                    {/* <input type="date" className="form-control" value={todate} onChange={getToDate}></input> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DateTimePicker className="form-control"
                                         ampm={false}
@@ -270,6 +253,7 @@
                             <div className="p-2" style={{height:'56vh',width:'100%',overflowY:"scroll"}}>
                                 <MDBAccordion alwaysOpen initialActive={1}>
                                     {
+                                        // Sensor text filter
                                         val.map((ele,i)=>{
                                             let match = Object.keys(tableData?.[ele]).find((element,i) => {
                                                 if (element.includes(filter)) {
@@ -279,7 +263,6 @@
                                                     return false
                                                 }
                                               });
-                                            // let accordionItemName=<h6 className="fw-bold text-capitalize"><FontAwesomeIcon icon={faHouseCrack} className="text-info fs-6 px-2"/>{item} {radioSelected ? <FontAwesomeIcon icon={faChartColumn} className="text-info fs-6 px-2" onClick={()=>{setMultiLineStation(item);setInvokeMultiLine(!invokeMulitiLine);setOverLap(true);}}/> : null}</h6>
                                             let accordionItemName=<h6 className="fw-bold text-capitalize"><FontAwesomeIcon icon={faHouseCrack} className="text-info fs-6 px-2"/>{ele}</h6>
                                           
                                             return <MDBAccordionItem hidden={match!==undefined ? false : true} collapseId={i+1} headerTitle={accordionItemName}>
@@ -306,6 +289,7 @@
                                                                                 setSelectReportStation(ele);
                                                                                 setSelectReportIndex(e)}}>
                                                                                         <td className="text-capitalize fw-bold">{e}</td>
+                                                                                        {/* Calling sparkline chart */}
                                                                                         <td className=""><Reportsparkline series={tableData?.[ele]?.[e]?.yaxis}/></td>
                                                                                     </tr>
                                                                         })
@@ -328,6 +312,7 @@
                                 
                                 <div className="p-2 mt-3">
                                     {
+                                        // Calling Report Table
                                         groupSelected ?  
                                         <Groupreporttable data={tableData?.[station]?.[param]}/> :
                                         <Reporttable data={tableData?.[station]?.[param]}/>
@@ -347,9 +332,11 @@
                                     <MDBTypography tag={'h6'} className="text-muted fw-bold pt-2 px-2"><FontAwesomeIcon icon={faCircle} className="text-danger fs-6 px-1"/>High Limit</MDBTypography>
                                 </div>
                                     {
-                                        overLap ?  <Reportmultilinechart data={tableData?.[multiLineStation]} station={multiLineStation} trigger={invokeMulitiLine}/>: 
+                                                // calling multiline chart when groupwise is enabled
+                                                overLap ?  <Reportmultilinechart data={tableData?.[multiLineStation]} station={multiLineStation} trigger={invokeMulitiLine}/>: 
                                         <div>
                                              {
+                                                // calling chart when stationwise is enabled
                                                 Object.keys(tableData).indexOf(station)!==-1 ? 
                                                 <Chart series={series} timestamp={timestamp} lsl={lsl} hsl={hsl} name={label.toUpperCase()} station={station.toUpperCase()}/>:
                                                 <Chart series={[]} timestamp={[]} lsl={[]} hsl={[]} name={""} station={""}/>
@@ -360,7 +347,7 @@
                         </div>
                     </MDBCol>
                 </MDBRow>            
-
+                {/* Loader implementation */}
                  {
                     isLoaderEnable ? 
                     <div className="vh-100 mask d-flex justify-content-center align-items-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>

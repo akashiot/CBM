@@ -14,15 +14,6 @@
     //         ],
     //         "type": "node"
     //     },
-    //     {
-    //         "type": "node",
-    //         "request": "launch",
-    //         "name": "Launch Program",
-    //         "skipFiles": [
-    //             "<node_internals>/**"
-    //         ],
-    //         "program": "${file}"
-    //     }
     // ]
         "version": "0.2.0",
         "configurations": [
@@ -31,7 +22,19 @@
             "request": "launch",
             "name": "Launch chrome against localhost",
             "url": "http://localhost:3000",
-            "webRoot": "${index.js}"
+            "webRoot": "${index.js}",
+            "skipFiles": [
+              "'!**/node_modules/**'"
+            ]
+          },
+          {
+              "type": "node",
+              "request": "launch",
+              "name": "Launch Program",
+              "skipFiles": [
+                "'!**/node_modules/**'"
+              ],
+              "program": "${D:/CBM/CBM BPAL/CBM_BACKEND/CBM_Service/index.js}"
           }
         ]
 }

@@ -4,24 +4,20 @@ import { Button, Input, Space, Table } from 'antd';
 import { MDBBtn,  MDBModal,
   MDBModalDialog,
   MDBModalContent,
-  MDBModalHeader,
-  MDBModalTitle,
   MDBModalBody,
-  MDBModalFooter } from 'mdb-react-ui-kit';
-  import { CSVLink, CSVDownload } from "react-csv";
+   } from 'mdb-react-ui-kit';
+  import { CSVLink } from "react-csv";
 
 
 const Groupreporttable = (props) => {
-
+  // Popup Variables
   const [basicModal, setBasicModal] = useState(false);
-
   const toggleShow = () => setBasicModal(!basicModal);
-
   const [fileName,setFileName]=useState('')
 
   const data=[]
+  // Assigning data to table when stationwise enabled
   if(props?.data){
-    // console.log(props?.data);
     props?.data?.hsl.forEach((e,i)=>{
       data.push({
         key:i.toString(),
@@ -196,13 +192,12 @@ const Groupreporttable = (props) => {
       </div>
       <Table columns={columns} dataSource={data} size="middle" scroll={{x: 500,y: 230}} />;
 
-      {/* file save modal*/}
+      {/* file save popup*/}
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
                 <MDBModalDialog>
                 <MDBModalContent>
                     <MDBModalBody>
                         <div className="d-flex justify-content-end">
-                             {/* <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn> */}
                         </div>
 
                         <label className="fw-bold mb-1">Enter filename </label>

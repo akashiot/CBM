@@ -1,65 +1,13 @@
-# CBM
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-You can run the following command In the project directory:
+In the project directory, you can run:
 
- `npm start`
+### `npm start`
 
-### `Note: Project directory is D:/cbm/CBM Projects/`
-
-### Steps to Install all the packages
-Open Terminal:
-Run the following command to install the nodemon globally in the Machine : 
-    
-`npm install -g nodemon`    
-## Goto the backend project directory
-    
-### OPC-UA-CLIENT
-- Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
-- you can run the following command in terminal:
-`npm install`
-### CBM SERVICE 
-- Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
-- you can run the following command in terminal: 
-`npm install`
-
-## Goto the Front End Folder
-### CBM FRONTEND
- - Path::D:\{Project Directory}\CBM_FRONTEND
- - you can run the following command in terminal: 
-`npm install`
-
-
-### Steps to start the Backend and Fronted Server:
-
-## Steps to start the Backend Server
-
-Goto the backend project directory
-    
-Here need to start the two services
- ### OPC-UA-CLIENT
-- Path: :D:\{Project Directory}\CBM_BACKEND\OPC-UA-Client
-- you can run the following command in terminal: 
-`npm start`
- ### CBM SERVICE 
-- Path: :D:\{Project Directory}\CBM_BACKEND\CBM_SERVICE
-- you can run the following command in terminal:
-`npm start`
-
-Steps to start the Frontend Server
-
-Goto the Front End Folder
-
-### CBM FRONTEND
-   - Path::D:\{Project Directory}\CBM_FRONTEND
-   - you can run the following command in terminal: 
-   `npm start`
-``
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, message, Popconfirm, Table, Typography } from 'antd';
 import axios from 'axios';
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/url.json'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
+import url from '../../configuration/url.json';
+
 
 const EditableCell = ({
   editing,
@@ -44,9 +45,8 @@ const Sensorlist = (props) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
-
   async function updateSensor(id,name,tagAddr,unit,description,lsl,hsl,lslDelay,hslDelay){
-    console.log(id,name,tagAddr,unit,description,lsl,hsl,lslDelay,hslDelay);
+    // Update sensor type list
     const msg=message.loading("Updating sensor details...",0)
     try {
         const update =  await axios.post(url?.baseurl2+'configuration/updateSensor',{
@@ -72,14 +72,13 @@ const Sensorlist = (props) => {
         console.error(error)
     }
   }
-
   async function deleteSensor(id) {
+    // Delete selected sensor type
     const msg=message.loading("Deleting sensor details...",0)
     try {
         const deleteSensor = await axios.post(url?.baseurl2+"configuration/deleteSensor",{
             id:id.toString()
         })
-        console.log(deleteSensor?.data);
         if(deleteSensor?.data?.status===true){
             message.success("Sensor deleted successfully!")
             props?.getSensor();
@@ -97,14 +96,12 @@ const Sensorlist = (props) => {
   let tableData=props?.data;
   useEffect(()=>{
       const originData = [];
-
+// Assigning sensor type data to table
       if(props?.data){
           tableData.forEach((ele,i)=>{
-            // console.log(ele?.lsl_delay);
               originData.push({
                   key:i.toString(),
                   limit:(i+1).toString(),
-                  // limit:ele?.limits_id,
                   sensorType:ele?.sensor_name,
                   tagAddress:ele?.sensor_address,
                   unit:ele?.unit,
@@ -117,8 +114,6 @@ const Sensorlist = (props) => {
           })
           setData(originData)
       }
-//   console.log(source,props?.trigger);
-
   },[props?.trigger])
 
 
@@ -152,7 +147,6 @@ const Sensorlist = (props) => {
           ...row,
         });
         setData(newData);
-        // console.log(row);
         updateSensor(props?.data[parseInt(key)]?.limits_id,row?.sensorType,row?.tagAddress,row?.unit,row?.description,row?.lsl,row?.hsl,row?.lslDelay,row?.hslDelay);
         setEditingKey('');
       } else {
@@ -181,14 +175,6 @@ const Sensorlist = (props) => {
         dataIndex: 'sensorType',
         width: '15%',
         editable: true,
-        // render:( (data,i) => {
-        //     const arr = data.split(" ");
-        //     for (var i = 0; i < arr.length; i++) {
-        //         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
-        //     }
-        //     const str2 = arr.join(" ");
-        //     return str2
-        // }),
       },
     {
       title: 'Tag Address',
@@ -324,6 +310,9 @@ const Sensorlist = (props) => {
         pagination={{
           onChange: cancel,
         }}
+        scroll={
+          {x:160,y:300}
+        }
       />
     </Form>
   );

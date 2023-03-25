@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Sparklines, SparklinesLine, SparklinesSpots} from 'react-sparklines';
-  export default function Sparkline(props){
-    const [series,setSeries]=useState([])
 
+  export default function Sparkline(props){
+    // sparkline chart variable
+    const [series,setSeries]=useState([])
+    // Assigning data to Sparkline
     useEffect(()=>{
       const d  = props?.series.map(e => parseFloat(e) || 0)
       setSeries(d)

@@ -1,0 +1,27 @@
+{
+    "apps":[
+        {
+            "name": "opcuaclient",
+            "cwd":"/CBM/Gateway/CBM_BACKEND/OPC-UA-Client",
+            "script": "index.js",
+            "watch":true,
+            "ignore_watch": ["node_modules"],
+            "out_file": "/dev/null",
+            "error_file": "/dev/null",
+            "cron_restart": "0 0 * * *"
+
+        },
+        {
+            "name": "cbmservice",
+            "cwd":"/CBM/Gateway/CBM_BACKEND/CBM_Service",
+            "script": "index.js",
+            "watch":true,
+            "ignore_watch": ["node_modules"],
+            "restart_delay": 10000,
+            "out_file": "/dev/null",
+            "error_file": "/dev/null",
+            "cron_restart": "0 0 * * *"
+
+        }
+    ]
+}

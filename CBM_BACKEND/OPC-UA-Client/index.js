@@ -1,10 +1,10 @@
-// const {OPCUAClient, AttributeIds, StatusCode, check_flag}=require('node-opcua')
-const plc = require("./plcRead");
-const stn_settings = require("./configuration/opcuaConfig-teal.json");
-
-var plcCount = stn_settings.plc_count;
-var plcconfig = stn_settings.plc_config;
-plcCount.forEach((i) => {
-  const plcInfo = plcconfig[i];
-  plc.plcReadData(plcInfo);
-});
+const plc = require('./plcRead')
+const stn_settings = require('./configuration/opcuaConfig-teal.json')
+    var plcCount = stn_settings.plc_count;
+    var plcconfig=stn_settings.plc_config;
+    plcCount.forEach(i => {
+        // Calling OPCUA service in index page
+        const plcInfo = plcconfig[i]
+        plc.plcReadData(plcInfo);
+        //console.log(plcInfo.Tags);
+    }); 

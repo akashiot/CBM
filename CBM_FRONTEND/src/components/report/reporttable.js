@@ -4,25 +4,21 @@ import { Button, Input, message, Space, Table } from 'antd';
 import { MDBBtn,  MDBModal,
   MDBModalDialog,
   MDBModalContent,
-  MDBModalHeader,
-  MDBModalTitle,
   MDBModalBody,
-  MDBModalFooter } from 'mdb-react-ui-kit';
-  import { CSVLink, CSVDownload } from "react-csv";
+  } from 'mdb-react-ui-kit';
   import { downloadExcel } from 'react-export-table-to-excel';
 
 
 
 const Reporttable = (props) => {
-
+// Popup Variables
   const [basicModal, setBasicModal] = useState(false);
-
   const toggleShow = () => setBasicModal(!basicModal);
-
   const [fileName,setFileName]=useState('')
+  const [btnEnable,setBtnEnable]=useState(false);
 
-  const [btnEnable,setBtnEnable]=useState(false)
   const restriction=(e)=>{
+      // Button enable and disable based on input field charcters
       if(e!=="" && e.match("^.*[A-Za-z].*$")){
         setBtnEnable(true);
       }
@@ -31,14 +27,15 @@ const Reporttable = (props) => {
       }
   }
   const specialCharRestriction=(e)=>{
+      // Special characters restriction in input field
       if( e.key.match(/[&\/\\^+#,!=@ ()$~|%.'":*?<>{}]/)){
           e.preventDefault();
       }
   }
 
   const data=[]
+  // Assigning data to table when stationwise enabled
   if(props?.data){
-    // console.log(props?.data);
     props?.data?.hsl.forEach((e,i)=>{
       data.push({
         key:i.toString(),
@@ -52,6 +49,7 @@ const Reporttable = (props) => {
   }
 
   function handleDownloadExcel() {
+    // Method for generate excel report
     if(data.length!==0){
       const header=["S.No","Time","Name","Lsl","Actual","Hsl"];
       const body = [];
@@ -63,7 +61,6 @@ const Reporttable = (props) => {
         sheet: "Historical Report",
         tablePayload: {
           header,
-          // accept two different data structures
           body:body,
         },
       });
@@ -217,13 +214,12 @@ const Reporttable = (props) => {
       </div>
       <Table columns={columns} dataSource={data} size="middle" scroll={{x: 500,y: 230}} />
 
-      {/* file save modal*/}
+      {/* file save popup*/}
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
                 <MDBModalDialog>
                 <MDBModalContent>
                     <MDBModalBody>
                         <div className="d-flex justify-content-end">
-                             {/* <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn> */}
                         </div>
 
                         <label className="fw-bold mb-1">Enter filename </label>

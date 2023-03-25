@@ -3,7 +3,7 @@ import { Form, Input, InputNumber, Popconfirm, Table, Typography,message } from 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import url from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/url.json';
+import url from '../../configuration/url.json'
 
 const EditableCell = ({
   editing,

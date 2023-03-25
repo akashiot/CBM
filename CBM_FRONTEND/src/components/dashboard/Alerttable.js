@@ -2,15 +2,15 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table, Tag, Typography} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import source from 'D:/cbm/CBM Projects/CBM_FRONTEND/src/configuration/alertconfig.json'
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 const Alerttable = (props) => {
+  // Table Variables
   const[data,setData]=useState([])
   const[lsl,setLsl]=useState('')
   const[hsl,setHsl]=useState('')
 
-
+// Assigning data to table
   useEffect(()=>{
     let value=[]
     if(props?.data){
@@ -22,18 +22,6 @@ const Alerttable = (props) => {
       setData(value);
       setLsl(value[0]?.lsl)
       setHsl(value[0]?.hsl)
-      // if(Object.keys(props?.data).length!==0){
-      //   const tabledata=Object.keys(props?.data)
-      //   tabledata.forEach((ele,i)=>{
-      //     Object.keys(props?.data[ele]).forEach((data,index)=>{
-      //       // console.log(props?.station, props?.sensor);
-      //       // setData(props?.data[ele][data]);
-      //       if(ele===props?.station && data===props?.sensor){
-      //         setData(props?.data[ele][data]);
-      //       }
-      //     })
-      //   })
-      // }
     }
 
    
@@ -136,7 +124,7 @@ if(data.length!==0){
   Object.keys(data[0]).forEach((head,i)=>{
     if(head==="start_time" || head==="alert_type" || head==="fault_type" || head==="lsl" || head==="alert_value" || head==="hsl"){
       columns.push({
-        title: head.toLocaleUpperCase(),
+        title: head.includes('_') ? head.replace("_","  ").toLocaleUpperCase() : head.toLocaleUpperCase(),
         dataIndex: head,
         key: head,
         render:( (data,i) => {
@@ -166,83 +154,6 @@ if(data.length!==0){
     }
   })
 }
-  // const columns=[
-  //   {
-  //     title: 'Timestamp',
-  //     dataIndex: 'start_time',
-  //     key: 'start_time',
-  //   render:( (data,i) => data?.slice(10,19)),
-  //   },
-  //   {
-  //     title: 'LSL',
-  //     dataIndex: 'lsl',
-  //     key: 'lsl',
-  //   },
-  //   {
-  //     title: 'Actual',
-  //     dataIndex: 'alert_value',
-  //     key: 'alert_value',
-  //   render:( (data,i) =>{
-  //               let colour=data>'67' ? 'danger' : "success"
-  //               return <Text type={colour}>{parseFloat(data).toFixed(2)}</Text>
-  //             })
-  //   },
-  //   {
-  //     title: 'HSL',
-  //     dataIndex: 'hsl',
-  //     key: 'hsl',
-  //   },    {
-  //     title: 'Type',
-  //     dataIndex: 'alert_type',
-  //     key: 'alert_type',
-  //   },
-  //   {
-  //     title: 'Fault Type',
-  //     dataIndex: 'fault_type',
-  //     key: 'fault_type',
-  //     // ...getColumnSearchProps(head),
-  //   render:( (data,i) =>{
-  //               let color = data==="Instant" ? 'blue' : 'red';
-  //               return <Tag color={color} key={i}>
-  //                       {data}
-  //                     </Tag>
-  //           }),
-  //   },
-  // ];
-  
-  // if(Object.keys(props?.data).length !== 0){
-  //     let header=props?.data?.['station-1']['process temperature']
-
-  //   Object.keys(header).forEach((head,i)=>{
-  //     columns.push({
-  //       title: head.toUpperCase(),
-  //       dataIndex: head,
-  //       key: head,
-  //       width: '30%',
-  //       ...getColumnSearchProps(head),
-  //       render:( (data,i) =>{
-  //         if(head==="fault_type"){
-  //           let color = data==="Instant" ? 'blue' : 'red';
-  //           return <Tag color={color} key={i}>
-  //                   {data}
-  //                 </Tag>
-  //         }
-  //         else if(head==="actual"){
-  //           let colour=data>'67' ? 'danger' : "warning"
-  //           return <Text type={colour}>{data}</Text>
-  //         }
-  //         else if(head === "timestamp"){
-  //           return data.slice(10,20)
-  //         }
-  //         else{
-  //           return data;
-  //         }
-  //       }),
-  //     })
-  //   })
-  // }
-
-  
 
   if(data === undefined){
     return <Table columns={columns} dataSource={[]} size="middle" scroll={{x:500 ,y:"100%"}}/>;
