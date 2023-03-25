@@ -1,6 +1,6 @@
 var mysql =require('mysql')
 var db = mysql.createConnection({
-    host:'192.168.10.205',//host
+    host:'172.22.59.68',//host
     user:'root',//username
     password:'password',//password
     database:'cbm'//databse name

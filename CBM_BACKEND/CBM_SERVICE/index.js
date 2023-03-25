@@ -16,7 +16,7 @@ const path = require("path");
 const db = require("../CBM_Service/model/database");
 // const CronJob = require('cron').CronJob;
 
-const plcurl = [`http://192.168.10.205:3001`]; //192.168.1.129
+const plcurl = [`http://172.22.59.68:3001`]; //192.168.1.129
 console.log("plcurl endpointUrl", plcurl);
 const app = express();
 app.use(cors());
