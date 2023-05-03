@@ -6,3 +6,5 @@ CBM_BACKEND/plcService/
 /node_modules
 /.pnp
 .pnp.js
+.vscode
+.idea
